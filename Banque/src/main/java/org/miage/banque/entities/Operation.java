@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -24,6 +25,7 @@ public class Operation {
     private double montant_converti;
     private String categorie;
     private String pays;
+    private Timestamp date;
 
     @ManyToOne
     @JoinColumn(name = "id", nullable = false, insertable = false, updatable = false)

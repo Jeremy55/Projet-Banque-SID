@@ -24,4 +24,7 @@ public class Compte {
 
     @OneToMany(mappedBy = "compte")
     private Set<Operation> operations;
+
+    private String IBAN;
+    private double solde;
 }
