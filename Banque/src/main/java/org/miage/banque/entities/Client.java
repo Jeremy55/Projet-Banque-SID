@@ -28,7 +28,8 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private Set<Card> cards;
 
-    @OneToOne(mappedBy = "client")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "compte_id", referencedColumnName = "id")
     private Compte compte;
 }
 

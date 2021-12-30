@@ -18,8 +18,7 @@ public class Compte {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "id")
+    @OneToOne(mappedBy = "compte")
     private Client client;
 
     @OneToMany(mappedBy = "compte")
