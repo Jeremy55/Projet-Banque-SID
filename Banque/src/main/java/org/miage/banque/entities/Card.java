@@ -1,5 +1,6 @@
 package org.miage.banque.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,12 +23,13 @@ public class Card {
     private String cryptogramme;
 
     private boolean active;
-    private boolean sansContact;
+    private boolean contact;
     private boolean virtuelle;
     private String localisation;
     private double plafond;
 
-    @ManyToOne
-    @JoinColumn(name = "id", nullable = false, updatable = false, insertable = false)
-    private Client client;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "compte_id")
+    @JsonBackReference
+    private Compte compte;
 }

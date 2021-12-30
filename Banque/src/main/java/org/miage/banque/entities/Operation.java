@@ -1,5 +1,6 @@
 package org.miage.banque.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,14 +21,15 @@ public class Operation {
 
     private String libelle;
     private double montant;
+    private double montant_apres_conversion;
     private double taux_conversion;
     private String devise;
-    private double montant_converti;
     private String categorie;
     private String pays;
     private Timestamp date;
 
-    @ManyToOne
-    @JoinColumn(name = "id", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "compte_id")
+    @JsonBackReference
     private Compte compte;
 }

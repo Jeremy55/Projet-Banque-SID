@@ -1,5 +1,6 @@
 package org.miage.banque.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,11 +26,9 @@ public class Client {
     private String telephone;
     private String secret;
 
-    @OneToMany(mappedBy = "client")
-    private Set<Card> cards;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "compte_id", referencedColumnName = "id")
+    @JsonBackReference
     private Compte compte;
 }
 

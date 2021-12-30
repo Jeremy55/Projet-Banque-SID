@@ -1,5 +1,6 @@
 package org.miage.banque.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,10 +19,17 @@ public class Compte {
     @Column(name = "id", nullable = false)
     private Long id;
 
+
     @OneToOne(mappedBy = "compte")
+    @JsonManagedReference
     private Client client;
 
     @OneToMany(mappedBy = "compte")
+    @JsonManagedReference
+    private Set<Card> cards;
+
+    @OneToMany(mappedBy = "compte")
+    @JsonManagedReference
     private Set<Operation> operations;
 
     private String IBAN;
