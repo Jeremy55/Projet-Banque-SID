@@ -5,30 +5,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 
-public class Client {
+public class Operation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String nom;
-    private String prenom;
+    private String libelle;
+    private double montant;
+    private double taux_conversion;
+    private String devise;
+    private double montant_converti;
+    private String categorie;
     private String pays;
-    private String no_passeport;
-    private String telephone;
-    private String secret;
 
-    @OneToMany(mappedBy = "client")
-    private Set<Card> cards;
-
-    @OneToOne(mappedBy = "client")
+    @ManyToOne
+    @JoinColumn(name = "id", nullable = false)
     private Compte compte;
 }
-
