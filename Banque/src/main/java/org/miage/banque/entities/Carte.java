@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 
-public class Card {
+public class Carte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -25,7 +25,7 @@ public class Card {
     private boolean active;
     private boolean contact;
     private boolean virtuelle;
-    private String localisation;
+    private boolean localisation;
     private double plafond;
 
     @ManyToOne(fetch = FetchType.LAZY)

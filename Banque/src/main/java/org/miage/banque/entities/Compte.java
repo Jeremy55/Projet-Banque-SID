@@ -26,7 +26,7 @@ public class Compte {
 
     @OneToMany(mappedBy = "compte")
     @JsonManagedReference
-    private Set<Card> cards;
+    private Set<Carte> cartes;
 
     @OneToMany(mappedBy = "compte")
     @JsonManagedReference
