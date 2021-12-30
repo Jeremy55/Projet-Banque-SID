@@ -26,6 +26,6 @@ public class Operation {
     private String pays;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "id", nullable = false, insertable = false, updatable = false)
     private Compte compte;
 }

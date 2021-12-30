@@ -18,6 +18,6 @@ public class Card {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "id", nullable = false, updatable = false, insertable = false)
     private Client client;
 }
