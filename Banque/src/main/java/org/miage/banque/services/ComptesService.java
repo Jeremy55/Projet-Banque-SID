@@ -16,6 +16,6 @@ public class ComptesService {
     private final ComptesRepository comptesRepository;
 
     public Compte getCompte(Long id) {
-        return comptesRepository.findById(id).orElseThrow(CompteNotFoundException::new);
+        return comptesRepository.findById(id).orElseThrow(() -> new CompteNotFoundException("Ce compte n'existe pas."));
     }
 }

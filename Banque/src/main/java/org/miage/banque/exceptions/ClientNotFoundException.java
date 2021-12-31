@@ -1,8 +1,8 @@
 package org.miage.banque.exceptions;
 
-public class CompteNotFoundException extends RuntimeException {
+public class ClientNotFoundException extends RuntimeException{
     private static final long serialVersionUID = 1L;
-    public CompteNotFoundException(String message) {
+    public ClientNotFoundException(String message) {
         super(message);
     }
 }
