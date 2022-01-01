@@ -1,7 +1,7 @@
 package org.miage.banque.assemblers;
 
 import org.miage.banque.controllers.ComptesController;
-import org.miage.banque.entities.Compte;
+import org.miage.banque.entities.compte.Compte;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;

@@ -1,12 +1,12 @@
-package org.miage.banque.entities;
+package org.miage.banque.entities.client;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.miage.banque.entities.compte.Compte;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Getter

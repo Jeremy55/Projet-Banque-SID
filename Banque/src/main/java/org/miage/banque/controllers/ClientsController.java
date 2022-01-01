@@ -2,7 +2,7 @@ package org.miage.banque.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.miage.banque.assemblers.ClientsAssembler;
-import org.miage.banque.entities.Client;
+import org.miage.banque.entities.client.Client;
 import org.miage.banque.services.ClientsService;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.ExposesResourceFor;

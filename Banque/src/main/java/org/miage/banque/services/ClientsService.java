@@ -1,7 +1,7 @@
 package org.miage.banque.services;
 
 import lombok.RequiredArgsConstructor;
-import org.miage.banque.entities.Client;
+import org.miage.banque.entities.client.Client;
 import org.miage.banque.exceptions.ClientNotFoundException;
 import org.miage.banque.repositories.ClientsRepository;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,12 @@
-package org.miage.banque.entities;
+package org.miage.banque.entities.compte;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.miage.banque.entities.operation.Operation;
+import org.miage.banque.entities.carte.Carte;
+import org.miage.banque.entities.client.Client;
 
 import javax.persistence.*;
 import java.util.Set;
