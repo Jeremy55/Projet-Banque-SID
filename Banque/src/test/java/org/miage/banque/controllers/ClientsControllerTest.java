@@ -1,18 +1,27 @@
 package org.miage.banque.controllers;
 
 import io.restassured.RestAssured;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.miage.banque.entities.compte.Compte;
+import org.miage.banque.services.ComptesService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
+import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ClientsControllerTest {
+
+    @Autowired
+    ComptesService comptesService;
 
     @LocalServerPort
     private int port;
@@ -41,6 +50,102 @@ class ClientsControllerTest {
     public void checkCompteHateoas(){
         //Check if there is a link to accounts in _links.
         when().get("/clients/1").then().body("_links.compte.href", notNullValue());
+    }
+
+    @Test
+    public void createClientWithExistingAccount() throws JSONException {
+        Compte compte = new Compte();
+        compte.setIBAN("FR111111111111111111111111121");
+        compte.setSolde(500);
+        comptesService.createCompte(compte);
+
+        JSONObject jsonClient = new JSONObject()
+                .put("nom","Picard")
+                .put("prenom","Jérémy")
+                .put("pays","France")
+                .put("no_passport","123456788")
+                .put("telephone","0329874155")
+                .put("secret","azerty123")
+                .put("compte_id",compte.getId());
+
+        given()
+                .contentType("application/json")
+                .body(jsonClient.toString())
+                .when()
+                .post("/clients")
+                .then()
+                .statusCode(HttpStatus.SC_CREATED);
+
+    }
+
+    @Test
+    public void createClientWithFakeAccount() throws JSONException {
+
+        JSONObject jsonClient = new JSONObject()
+                .put("nom","Picard")
+                .put("prenom","Jérémy")
+                .put("pays","France")
+                .put("no_passport","123456787")
+                .put("telephone","0329874155")
+                .put("secret","azerty123")
+                .put("compte_id","77777777"); //Fake account id.
+
+        given()
+                .contentType("application/json")
+                .body(jsonClient.toString())
+                .when()
+                .post("/clients")
+                .then()
+                .statusCode(HttpStatus.SC_NOT_FOUND);
+    }
+
+    @Test
+    public void createClientDuplicatePassportNumber() throws JSONException {
+
+        Compte compte = new Compte();
+        compte.setIBAN("FR111111111111111111111111211");
+        compte.setSolde(500);
+        comptesService.createCompte(compte);
+
+        Compte compte2 = new Compte();
+        compte.setIBAN("FR111111111111111111111111221");
+        compte.setSolde(700);
+        comptesService.createCompte(compte2);
+
+
+        JSONObject jsonClient = new JSONObject()
+                .put("nom","Picard")
+                .put("prenom","Jérémy")
+                .put("pays","France")
+                .put("no_passport","111111111")
+                .put("telephone","0329874155")
+                .put("secret","azerty123")
+                .put("compte_id",compte.getId());
+
+        JSONObject jsonClient2 = new JSONObject()
+                .put("nom","Picard")
+                .put("prenom","Jérémy")
+                .put("pays","France")
+                .put("no_passport","111111111")
+                .put("telephone","0329874155")
+                .put("secret","azerty123")
+                .put("compte_id",compte2.getId());
+
+        given()
+                .contentType("application/json")
+                .body(jsonClient.toString())
+                .when()
+                .post("/clients")
+                .then()
+                .statusCode(HttpStatus.SC_CREATED);
+
+        given()
+                .contentType("application/json")
+                .body(jsonClient2.toString())
+                .when()
+                .post("/clients")
+                .then()
+                .statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
     }
 
 }

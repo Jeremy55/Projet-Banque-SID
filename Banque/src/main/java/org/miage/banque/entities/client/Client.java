@@ -22,7 +22,10 @@ public class Client {
     private String nom;
     private String prenom;
     private String pays;
+
+    @Column(unique = true)
     private String no_passeport;
+
     private String telephone;
     private String secret;
 

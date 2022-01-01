@@ -15,4 +15,11 @@ public class ClientsService {
         return clientsRepository.findById(id).orElseThrow(() -> new ClientNotFoundException("Ce client n'existe pas."));
     }
 
+    public Iterable<? extends Client> getAllClients() {
+        return clientsRepository.findAll();
+    }
+
+    public Client createClient(Client client) {
+        return clientsRepository.save(client);
+    }
 }

@@ -27,7 +27,6 @@ public class ComptesService {
     }
 
     public void deleteCompte(Long id) {
-        System.out.println(comptesRepository.findById(id));
         comptesRepository.deleteById(id);
     }
 }
