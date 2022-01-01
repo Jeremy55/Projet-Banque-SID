@@ -35,6 +35,7 @@ public class Compte {
     @JsonManagedReference
     private Set<Operation> operations;
 
+    @Column(unique = true)
     private String IBAN;
     private double solde;
 }

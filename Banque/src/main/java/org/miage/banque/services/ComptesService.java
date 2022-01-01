@@ -13,10 +13,16 @@ import org.springframework.stereotype.Service;
 public class ComptesService {
 
     private final ComptesRepository comptesRepository;
-    private final CompteValidator compteValidator;
 
     public Compte getCompte(Long id) {
         return comptesRepository.findById(id).orElseThrow(() -> new CompteNotFoundException("Ce compte n'existe pas."));
     }
 
+    public Compte createCompte(Compte compte) {
+        return comptesRepository.save(compte);
+    }
+
+    public Iterable<? extends Compte> getAllComptes() {
+        return comptesRepository.findAll();
+    }
 }
