@@ -15,6 +15,7 @@ import org.apache.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.notNullValue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ComptesControllerTest {
@@ -152,5 +153,11 @@ class ComptesControllerTest {
                 .statusCode(HttpStatus.SC_NOT_FOUND)
                 .extract()
                 .response();
+    }
+
+    @Test
+    public void checkClientHateoas(){
+        //Check if there is a link to accounts in _links.
+        when().get("/comptes/1").then().body("_links.client.href", notNullValue());
     }
 }

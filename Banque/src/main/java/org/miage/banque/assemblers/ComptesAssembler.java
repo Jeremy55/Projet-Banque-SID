@@ -1,5 +1,6 @@
 package org.miage.banque.assemblers;
 
+import org.miage.banque.controllers.ClientsController;
 import org.miage.banque.controllers.ComptesController;
 import org.miage.banque.entities.compte.Compte;
 import org.springframework.hateoas.CollectionModel;
@@ -21,7 +22,9 @@ public class ComptesAssembler implements RepresentationModelAssembler<Compte, En
     public EntityModel<Compte> toModel(Compte compte) {
         return EntityModel.of(compte,
                 linkTo(methodOn(ComptesController.class)
-                        .getOne(compte.getId())).withSelfRel());
+                        .getOne(compte.getId())).withSelfRel(),
+                linkTo(methodOn(ClientsController.class)
+                        .getOne(compte.getClient().getId())).withRel("client"));
     }
 
     @Override
