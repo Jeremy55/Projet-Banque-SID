@@ -25,4 +25,7 @@ public class ClientsController {
     public EntityModel<Client> getOne(@PathVariable("clientId") Long clientId) {
         return clientsAssembler.toModel(clientsService.getClient(clientId));
     }
+
+
+
 }
