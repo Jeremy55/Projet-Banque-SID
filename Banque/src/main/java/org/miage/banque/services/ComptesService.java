@@ -25,4 +25,9 @@ public class ComptesService {
     public Iterable<? extends Compte> getAllComptes() {
         return comptesRepository.findAll();
     }
+
+    public void deleteCompte(Long id) {
+        System.out.println(comptesRepository.findById(id));
+        comptesRepository.deleteById(id);
+    }
 }

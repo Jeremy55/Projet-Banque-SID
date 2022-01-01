@@ -29,7 +29,7 @@ public class Carte {
     private boolean localisation;
     private double plafond;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "compte_id")
     @JsonBackReference
     private Compte compte;

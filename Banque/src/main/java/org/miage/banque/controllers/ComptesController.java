@@ -43,4 +43,11 @@ public class ComptesController {
         return new ResponseEntity<>(comptesAssembler.toModel(comptesService.createCompte(compteToCreate)), HttpStatus.CREATED);
     }
 
+    @DeleteMapping(value="/{compteId}")
+    @Transactional
+    public ResponseEntity<?> delete(@PathVariable("compteId") Long id){
+        comptesService.deleteCompte(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
