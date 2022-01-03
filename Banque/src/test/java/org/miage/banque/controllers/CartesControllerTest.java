@@ -26,6 +26,9 @@ class CartesControllerTest {
     @Autowired
     CartesService cartesService;
 
+    @Autowired
+    ComptesService comptesService;
+
     @LocalServerPort
     private int port;
 
@@ -56,5 +59,33 @@ class CartesControllerTest {
             get("/cartes/1").
         then().
             statusCode(HttpStatus.SC_OK);
+    }
+
+    @Test
+    public void addCarte() throws JSONException {
+        Compte compte = new Compte();
+        compte.setIBAN("FR76300067700011234567890189");
+        compte.setSolde(100);
+
+        comptesService.createCompte(compte);
+
+        JSONObject jsonCarte = new JSONObject()
+                .put("numero", "1234567890123457")
+                .put("code", "1234")
+                .put("cryptogramme", "123")
+                .put("active", true)
+                .put("contact", true)
+                .put("virtuelle", true)
+                .put("localisation",true)
+                .put("plafond", 1000)
+                .put("compte_id", compte.getId());
+
+        given()
+                .contentType("application/json")
+                .body(jsonCarte.toString())
+                .when()
+                .post("/cartes")
+                .then()
+                .statusCode(HttpStatus.SC_CREATED);
     }
 }

@@ -19,6 +19,7 @@ public class Carte {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(unique = true)
     private String numero;
     private String code;
     private String cryptogramme;
