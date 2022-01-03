@@ -2,16 +2,12 @@ package org.miage.banque.services;
 
 import lombok.RequiredArgsConstructor;
 import org.miage.banque.entities.carte.Carte;
-import org.miage.banque.entities.carte.CarteInput;
+import org.miage.banque.entities.carte.CartesUtils;
 import org.miage.banque.exceptions.CarteNotFoundException;
 import org.miage.banque.repositories.CartesRepository;
-import org.miage.banque.repositories.ClientsRepository;
 import org.springframework.stereotype.Service;
 
-import java.security.Timestamp;
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +28,10 @@ public class CartesService {
             calendar.add(Calendar.YEAR,1);
         }
         carte.setExpiration(calendar.getTime());
+
+        carte.setNumero(CartesUtils.randomString(16));
+        carte.setCode(CartesUtils.randomString(4));
+        carte.setCryptogramme(CartesUtils.randomString(3));
 
         return cartesRepository.save(carte);
     }

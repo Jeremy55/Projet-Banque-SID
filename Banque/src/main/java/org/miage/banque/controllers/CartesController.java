@@ -35,9 +35,6 @@ public class CartesController  {
     @Transactional
     public ResponseEntity<?> create(@RequestBody @Valid CarteInput carteInput) {
         Carte carte = new Carte();
-        carte.setNumero(carteInput.getNumero());
-        carte.setCode(carteInput.getCode());
-        carte.setCryptogramme(carteInput.getCryptogramme());
         carte.setActive(carteInput.isActive());
         carte.setContact(carteInput.isContact());
         carte.setVirtuelle(carteInput.isVirtuelle());

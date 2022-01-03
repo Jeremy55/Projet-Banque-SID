@@ -14,21 +14,6 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class CarteInput {
 
-    @NotBlank
-    @NotNull
-    @Size(min = 16, max = 16)
-    private String numero;
-
-    @NotBlank
-    @NotNull
-    @Size(min = 4, max = 4)
-    private String code;
-
-    @NotBlank
-    @NotNull
-    @Size(min = 3, max = 3)
-    private String cryptogramme;
-
     @NotNull
     private boolean active;
     @NotNull
@@ -39,11 +24,10 @@ public class CarteInput {
     private boolean localisation;
 
     @NotNull
-    @DecimalMin(value= "0.0")
+    @DecimalMin(value= "100")
     private double plafond;
 
     @NotNull
     private Long compte_id;
-
 
 }

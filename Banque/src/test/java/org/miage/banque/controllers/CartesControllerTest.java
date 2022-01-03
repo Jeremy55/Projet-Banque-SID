@@ -70,9 +70,6 @@ class CartesControllerTest {
         comptesService.createCompte(compte);
 
         JSONObject jsonCarte = new JSONObject()
-                .put("numero", "1234567890123457")
-                .put("code", "1234")
-                .put("cryptogramme", "123")
                 .put("active", true)
                 .put("contact", true)
                 .put("virtuelle", true)
