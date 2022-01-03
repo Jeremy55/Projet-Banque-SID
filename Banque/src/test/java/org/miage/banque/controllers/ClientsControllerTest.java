@@ -216,4 +216,34 @@ class ClientsControllerTest {
 
     }
 
+    @Test void patchClient() throws JSONException {
+        Compte compte = new Compte();
+        compte.setIBAN("FR221111111111111111111133222");
+        compte.setSolde(500);
+
+        Client client = new Client();
+        client.setNom("Picard");
+        client.setPrenom("Jérémy");
+        client.setPays("France");
+        client.setNo_passeport("111559888");
+        client.setTelephone("0695198754");
+        client.setSecret("azerty123456");
+        client.setCompte(compte);
+
+        clientsService.createClient(client);
+
+        JSONObject jsonClientPatch = new JSONObject()
+                .put("prenom","Stéphane");
+
+        given()
+                .contentType("application/json")
+                .body(jsonClientPatch.toString())
+                .when()
+                .patch("/clients/"+client.getId())
+                .then()
+                .statusCode(HttpStatus.SC_OK);
+
+        assertEquals("Stéphane",clientsService.getClient(client.getId()).getPrenom());
+    }
+
 }
