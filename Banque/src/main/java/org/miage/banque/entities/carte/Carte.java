@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.miage.banque.entities.compte.Compte;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -29,6 +31,8 @@ public class Carte {
     private boolean virtuelle;
     private boolean localisation;
     private double plafond;
+
+    private Date expiration;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "compte_id")

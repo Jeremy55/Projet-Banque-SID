@@ -8,6 +8,11 @@ import org.miage.banque.repositories.CartesRepository;
 import org.miage.banque.repositories.ClientsRepository;
 import org.springframework.stereotype.Service;
 
+import java.security.Timestamp;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 public class CartesService {
@@ -19,6 +24,15 @@ public class CartesService {
     }
 
     public Carte createCarte(Carte carte) {
+        Calendar calendar = Calendar.getInstance();
+        //If it's a virtual card it's valid for one week, otherwise it's valid for one year.
+        if(carte.isVirtuelle()){
+            calendar.add(Calendar.WEEK_OF_YEAR,1);
+        }else{
+            calendar.add(Calendar.YEAR,1);
+        }
+        carte.setExpiration(calendar.getTime());
+
         return cartesRepository.save(carte);
     }
 }
