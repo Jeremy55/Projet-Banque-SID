@@ -192,4 +192,28 @@ class ClientsControllerTest {
                 .statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
     }
 
+    @Test
+    public void deleteClient(){
+        Compte compte = new Compte();
+        compte.setIBAN("FR111111111111111111111133222");
+        compte.setSolde(500);
+
+        Client client = new Client();
+        client.setNom("Picard");
+        client.setPrenom("Jérémy");
+        client.setPays("France");
+        client.setNo_passeport("123556888");
+        client.setTelephone("0695198754");
+        client.setSecret("azerty123456");
+        client.setCompte(compte);
+
+        clientsService.createClient(client);
+        comptesService.createCompte(compte);
+
+        when().delete("/clients/"+client.getId()).then().statusCode(HttpStatus.SC_NO_CONTENT);
+        when().get("/comptes/"+client.getCompte().getId()).then().statusCode(HttpStatus.SC_NOT_FOUND);
+        when().get("/clients/"+client.getCompte().getId()).then().statusCode(HttpStatus.SC_NOT_FOUND);
+
+    }
+
 }
