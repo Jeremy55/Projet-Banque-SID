@@ -3,8 +3,12 @@ package org.miage.banque.controllers;
 import lombok.RequiredArgsConstructor;
 import org.miage.banque.assemblers.CartesAssembler;
 import org.miage.banque.entities.carte.Carte;
+import org.miage.banque.services.CartesService;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,5 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class CartesController  {
 
     private final CartesAssembler cartesAssembler;
+    private final CartesService cartesService;
+
+    @GetMapping(value = "/{carteId}")
+    public EntityModel<Carte> getOne(@PathVariable("carteId") Long carteId) {
+        return cartesAssembler.toModel(cartesService.getCarte(carteId));
+    }
+
 
 }
