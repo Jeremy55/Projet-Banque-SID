@@ -2,7 +2,7 @@ package org.miage.banque.services;
 
 import lombok.RequiredArgsConstructor;
 import org.miage.banque.entities.carte.Carte;
-import org.miage.banque.entities.carte.CartesUtils;
+import org.miage.banque.entities.carte.CarteUtils;
 import org.miage.banque.exceptions.CarteNotFoundException;
 import org.miage.banque.repositories.CartesRepository;
 import org.springframework.stereotype.Service;
@@ -21,17 +21,17 @@ public class CartesService {
 
     public Carte createCarte(Carte carte) {
         Calendar calendar = Calendar.getInstance();
-        //If it's a virtual card it's valid for one week, otherwise it's valid for one year.
+        //If it's a virtual card it's valid for two weeks, otherwise it's valid for one year.
         if(carte.isVirtuelle()){
-            calendar.add(Calendar.WEEK_OF_YEAR,1);
+            calendar.add(Calendar.WEEK_OF_YEAR,2);
         }else{
-            calendar.add(Calendar.YEAR,1);
+            calendar.add(Calendar.YEAR,2);
         }
         carte.setExpiration(calendar.getTime());
 
-        carte.setNumero(CartesUtils.randomString(16));
-        carte.setCode(CartesUtils.randomString(4));
-        carte.setCryptogramme(CartesUtils.randomString(3));
+        carte.setNumero(CarteUtils.generateNumeroCarte());
+        carte.setCode(CarteUtils.generateCodeCarte());
+        carte.setCryptogramme(CarteUtils.generateCryptogramme());
 
         return cartesRepository.save(carte);
     }
