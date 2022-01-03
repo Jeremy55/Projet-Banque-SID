@@ -18,6 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 
 public class Compte {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -38,4 +39,6 @@ public class Compte {
     @Column(unique = true)
     private String IBAN;
     private double solde;
+
+
 }

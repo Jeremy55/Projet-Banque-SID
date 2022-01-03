@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.miage.banque.entities.compte.Compte;
 import org.miage.banque.services.ComptesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,9 @@ class ComptesControllerTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private ComptesService comptesService;
 
     @BeforeEach
     public void setupContext(){
@@ -52,9 +56,9 @@ class ComptesControllerTest {
         given()
                 .contentType("application/json")
                 .body(json.toString())
-        .when()
+                .when()
                 .post("/comptes")
-        .then()
+                .then()
                 .statusCode(HttpStatus.SC_CREATED);
     }
 
@@ -113,31 +117,16 @@ class ComptesControllerTest {
 
     @Test
     public void deleteCompte() throws JSONException {
-        JSONObject json = new JSONObject()
-                .put("iban", "FR111111111111111111111111114")
-                .put("solde", "100");
-
-        //Create a new entity that we will delete after.
-        Response response =
-        given()
-                .contentType("application/json")
-                .body(json.toString())
-                .when()
-                .post("/comptes")
-                .then()
-                .statusCode(HttpStatus.SC_CREATED)
-                .extract()
-                .response();
-
-        String linkToCompte = response.path("_links.self.href"); //Retrieve the link to the newly created ressource to try to delete it.
-        String id = linkToCompte.substring(linkToCompte.lastIndexOf("/")); //Extract the id of the newly created ressource
+        Compte compte = new Compte();
+        compte.setIBAN("FR111111111111111111111111124");
+        compte.setSolde(100);
+        comptesService.createCompte(compte);
 
         //Delete the newly created ressource.
         given()
                 .contentType("application/json")
-                .body(json.toString())
                 .when()
-                .delete("/comptes"+id)
+                .delete("/comptes/"+compte.getId())
                 .then()
                 .statusCode(HttpStatus.SC_NO_CONTENT)
                 .extract()
@@ -146,9 +135,8 @@ class ComptesControllerTest {
         // It should be impossible to get the deleted ressource.
         given()
                 .contentType("application/json")
-                .body(json.toString())
                 .when()
-                .get("/comptes"+id)
+                .get("/comptes/"+compte.getId())
                 .then()
                 .statusCode(HttpStatus.SC_NOT_FOUND)
                 .extract()

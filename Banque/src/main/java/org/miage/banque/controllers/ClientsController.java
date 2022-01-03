@@ -53,4 +53,28 @@ public class ClientsController {
         return new ResponseEntity<>(clientsAssembler.toModel(clientsService.createClient(clientToCreate)), HttpStatus.CREATED);
     }
 
+    @PutMapping(value="/{clientId}")
+    @Transactional
+    public ResponseEntity<?> update(@PathVariable("clientId") Long clientId, @RequestBody ClientInput client){
+
+        Client clientToUpdate = clientsService.getClient(clientId);
+        clientToUpdate.setNom(client.getNom());
+        clientToUpdate.setPrenom(client.getPrenom());
+        clientToUpdate.setPays(client.getPays());
+        clientToUpdate.setNo_passeport(client.getNo_passport());
+        clientToUpdate.setTelephone(client.getTelephone());
+        clientToUpdate.setSecret(client.getSecret());
+
+        //Retrieve an existing account to link it to the newly created client.
+        clientToUpdate.setCompte(comptesService.getCompte(client.getCompte_id()));
+
+        return new ResponseEntity<>(clientsAssembler.toModel(clientsService.updateClient(clientToUpdate)), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value="/{clientId}")
+    @Transactional
+    public ResponseEntity<?> delete(@PathVariable("clientId") Long clientId){
+        clientsService.deleteClient(clientId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

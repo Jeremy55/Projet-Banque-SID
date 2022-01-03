@@ -22,4 +22,12 @@ public class ClientsService {
     public Client createClient(Client client) {
         return clientsRepository.save(client);
     }
+
+    public Client updateClient(Client clientToUpdate) {
+        return clientsRepository.save(clientToUpdate);
+    }
+
+    public void deleteClient(Long clientId) {
+        clientsRepository.deleteById(clientId);
+    }
 }

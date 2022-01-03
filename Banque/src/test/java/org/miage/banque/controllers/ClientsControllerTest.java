@@ -6,7 +6,9 @@ import org.json.JSONObject;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.miage.banque.entities.client.Client;
 import org.miage.banque.entities.compte.Compte;
+import org.miage.banque.services.ClientsService;
 import org.miage.banque.services.ComptesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +24,9 @@ class ClientsControllerTest {
 
     @Autowired
     ComptesService comptesService;
+
+    @Autowired
+    ClientsService clientsService;
 
     @LocalServerPort
     private int port;
@@ -97,6 +102,45 @@ class ClientsControllerTest {
                 .post("/clients")
                 .then()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
+    }
+
+    @Test
+    public void putClient() throws JSONException {
+
+
+        Compte compte = new Compte();
+        compte.setIBAN("FR111111111111111111111113222");
+        compte.setSolde(500);
+
+        Client client = new Client();
+        client.setNom("Picard");
+        client.setPrenom("Jérémy");
+        client.setPays("France");
+        client.setNo_passeport("123456888");
+        client.setTelephone("0695198754");
+        client.setSecret("azerty123456");
+        client.setCompte(compte);
+
+        clientsService.createClient(client);
+
+        JSONObject updatedClient = new JSONObject()
+                .put("nom","Picard")
+                .put("prenom","Florian")
+                .put("pays","France")
+                .put("no_passport","123456888")
+                .put("telephone","0695198754")
+                .put("secret","azerty123456")
+                .put("compte_id",compte.getId()); //Fake account id.
+
+        given()
+                .contentType("application/json")
+                .body(updatedClient.toString())
+                .when()
+                .put("/clients/"+client.getId())
+                .then()
+                .statusCode(HttpStatus.SC_OK);
+
+        assertEquals("Florian",clientsService.getClient(client.getId()).getPrenom());
     }
 
     @Test
