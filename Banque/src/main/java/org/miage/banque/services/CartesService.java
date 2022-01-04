@@ -35,4 +35,8 @@ public class CartesService {
 
         return cartesRepository.save(carte);
     }
+
+    public Iterable<? extends Carte> getAllCartes() {
+        return cartesRepository.findAll();
+    }
 }

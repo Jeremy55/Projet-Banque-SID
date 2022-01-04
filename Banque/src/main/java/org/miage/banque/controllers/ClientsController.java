@@ -25,7 +25,6 @@ import javax.validation.Valid;
 public class ClientsController {
 
     private final ClientsService clientsService;
-    private final ComptesService comptesService;
     private final ClientsAssembler clientsAssembler;
 
     @GetMapping(value="/{clientId}")
@@ -48,8 +47,6 @@ public class ClientsController {
         clientToCreate.setNo_passeport(client.getNo_passport());
         clientToCreate.setTelephone(client.getTelephone());
         clientToCreate.setSecret(client.getSecret());
-        //Retrieve an existing account to link it to the newly created client.
-        clientToCreate.setCompte(comptesService.getCompte(client.getCompte_id()));
         return new ResponseEntity<>(clientsAssembler.toModel(clientsService.createClient(clientToCreate)), HttpStatus.CREATED);
     }
 
@@ -65,9 +62,6 @@ public class ClientsController {
         clientToUpdate.setTelephone(client.getTelephone());
         clientToUpdate.setSecret(client.getSecret());
 
-        //Retrieve an existing account to link it to the newly created client.
-        clientToUpdate.setCompte(comptesService.getCompte(client.getCompte_id()));
-
         return new ResponseEntity<>(clientsAssembler.toModel(clientsService.updateClient(clientToUpdate)), HttpStatus.OK);
     }
 
@@ -81,9 +75,6 @@ public class ClientsController {
         if(client.getNo_passport() != null) clientToUpdate.setNo_passeport(client.getNo_passport());
         if(client.getTelephone() != null) clientToUpdate.setTelephone(client.getTelephone());
         if(client.getSecret() != null) clientToUpdate.setSecret(client.getSecret());
-
-        //Retrieve an existing account to link it to the newly created client.
-        if(client.getCompte_id() != null) clientToUpdate.setCompte(comptesService.getCompte(client.getCompte_id()));
 
         return new ResponseEntity<>(clientsAssembler.toModel(clientsService.updateClient(clientToUpdate)), HttpStatus.OK);
     }

@@ -29,6 +29,9 @@ class CartesControllerTest {
     @Autowired
     ComptesService comptesService;
 
+    @Autowired
+    ClientsService clientsService;
+
     @LocalServerPort
     private int port;
 
@@ -63,11 +66,21 @@ class CartesControllerTest {
 
     @Test
     public void addCarte() throws JSONException {
+
+        Client client = new Client();
+        client.setNom("Picard");
+        client.setPrenom("Jérémy");
+        client.setPays("France");
+        client.setNo_passeport("113999888");
+        client.setTelephone("0695198754");
+        client.setSecret("azerty123456");
+
         Compte compte = new Compte();
-        compte.setIBAN("FR76300067700011234567890189");
-        compte.setSolde(100);
+        compte.setSolde(200);
+        compte.setClient(client);
 
         comptesService.createCompte(compte);
+
 
         JSONObject jsonCarte = new JSONObject()
                 .put("active", true)

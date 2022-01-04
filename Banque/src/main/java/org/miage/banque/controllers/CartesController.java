@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.miage.banque.assemblers.CartesAssembler;
 import org.miage.banque.entities.carte.Carte;
 import org.miage.banque.entities.carte.CarteInput;
+import org.miage.banque.entities.client.Client;
 import org.miage.banque.services.CartesService;
 import org.miage.banque.services.ComptesService;
 import org.springframework.hateoas.EntityModel;
@@ -29,6 +30,11 @@ public class CartesController  {
     @GetMapping(value = "/{carteId}")
     public EntityModel<Carte> getOne(@PathVariable("carteId") Long carteId) {
         return cartesAssembler.toModel(cartesService.getCarte(carteId));
+    }
+
+    @GetMapping
+    public Iterable<EntityModel<Carte>> getAll(){
+        return cartesAssembler.toCollectionModel(cartesService.getAllCartes());
     }
 
     @PostMapping

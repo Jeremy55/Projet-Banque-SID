@@ -58,56 +58,7 @@ class ClientsControllerTest {
     }
 
     @Test
-    public void createClientWithExistingAccount() throws JSONException {
-        Compte compte = new Compte();
-        compte.setIBAN("FR111111111111111111111111121");
-        compte.setSolde(500);
-        comptesService.createCompte(compte);
-
-        JSONObject jsonClient = new JSONObject()
-                .put("nom","Picard")
-                .put("prenom","Jérémy")
-                .put("pays","France")
-                .put("no_passport","123456788")
-                .put("telephone","0329874155")
-                .put("secret","azerty123")
-                .put("compte_id",compte.getId());
-
-        given()
-                .contentType("application/json")
-                .body(jsonClient.toString())
-                .when()
-                .post("/clients")
-                .then()
-                .statusCode(HttpStatus.SC_CREATED);
-
-    }
-
-    @Test
-    public void createClientWithFakeAccount() throws JSONException {
-
-        JSONObject jsonClient = new JSONObject()
-                .put("nom","Picard")
-                .put("prenom","Jérémy")
-                .put("pays","France")
-                .put("no_passport","123456787")
-                .put("telephone","0329874155")
-                .put("secret","azerty123")
-                .put("compte_id","77777777"); //Fake account id.
-
-        given()
-                .contentType("application/json")
-                .body(jsonClient.toString())
-                .when()
-                .post("/clients")
-                .then()
-                .statusCode(HttpStatus.SC_NOT_FOUND);
-    }
-
-    @Test
     public void putClient() throws JSONException {
-
-
         Compte compte = new Compte();
         compte.setIBAN("FR111111111111111111111113222");
         compte.setSolde(500);
@@ -144,36 +95,44 @@ class ClientsControllerTest {
     }
 
     @Test
-    public void createClientDuplicatePassportNumber() throws JSONException {
-
-        Compte compte = new Compte();
-        compte.setIBAN("FR111111111111111111111111211");
-        compte.setSolde(500);
-        comptesService.createCompte(compte);
-
-        Compte compte2 = new Compte();
-        compte.setIBAN("FR111111111111111111111111221");
-        compte.setSolde(700);
-        comptesService.createCompte(compte2);
-
+    public void postClient() throws JSONException{
 
         JSONObject jsonClient = new JSONObject()
                 .put("nom","Picard")
                 .put("prenom","Jérémy")
                 .put("pays","France")
-                .put("no_passport","111111111")
+                .put("no_passport","111121112")
                 .put("telephone","0329874155")
-                .put("secret","azerty123")
-                .put("compte_id",compte.getId());
+                .put("secret","azerty123");
+
+        given()
+                .contentType("application/json")
+                .body(jsonClient.toString())
+                .when()
+                .post("/clients")
+                .then()
+                .statusCode(HttpStatus.SC_CREATED);
+
+    }
+
+    @Test
+    public void createClientDuplicatePassportNumber() throws JSONException {
+
+        JSONObject jsonClient = new JSONObject()
+                .put("nom","Picard")
+                .put("prenom","Jérémy")
+                .put("pays","France")
+                .put("no_passport","111111112")
+                .put("telephone","0329874155")
+                .put("secret","azerty123");
 
         JSONObject jsonClient2 = new JSONObject()
                 .put("nom","Picard")
                 .put("prenom","Jérémy")
                 .put("pays","France")
-                .put("no_passport","111111111")
+                .put("no_passport","111111112")
                 .put("telephone","0329874155")
-                .put("secret","azerty123")
-                .put("compte_id",compte2.getId());
+                .put("secret","azerty123");
 
         given()
                 .contentType("application/json")
@@ -195,7 +154,6 @@ class ClientsControllerTest {
     @Test
     public void deleteClient(){
         Compte compte = new Compte();
-        compte.setIBAN("FR111111111111111111111133222");
         compte.setSolde(500);
 
         Client client = new Client();
@@ -206,6 +164,9 @@ class ClientsControllerTest {
         client.setTelephone("0695198754");
         client.setSecret("azerty123456");
         client.setCompte(compte);
+
+        compte.setClient(client);
+
 
         clientsService.createClient(client);
         comptesService.createCompte(compte);

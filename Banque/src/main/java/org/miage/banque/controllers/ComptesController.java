@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.miage.banque.assemblers.ComptesAssembler;
 import org.miage.banque.entities.compte.Compte;
 import org.miage.banque.entities.compte.CompteInput;
+import org.miage.banque.services.ClientsService;
 import org.miage.banque.services.ComptesService;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 public class ComptesController {
 
     private final ComptesService comptesService;
+    private final ClientsService clientsService;
     private final ComptesAssembler comptesAssembler;
 
     @GetMapping(value="/{compteId}")
@@ -38,8 +40,9 @@ public class ComptesController {
     @Transactional
     public ResponseEntity<?> create(@RequestBody @Valid CompteInput compte){
         Compte compteToCreate = new Compte();
-        compteToCreate.setIBAN(compte.getIBAN());
         compteToCreate.setSolde(compte.getSolde());
+        compteToCreate.setClient(clientsService.getClient(compte.getClient_id()));
+
         return new ResponseEntity<>(comptesAssembler.toModel(comptesService.createCompte(compteToCreate)), HttpStatus.CREATED);
     }
 

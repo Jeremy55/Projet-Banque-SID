@@ -40,5 +40,4 @@ public class Compte {
     private String IBAN;
     private double solde;
 
-
 }

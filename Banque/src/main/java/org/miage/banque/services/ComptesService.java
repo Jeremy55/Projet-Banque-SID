@@ -3,6 +3,7 @@ package org.miage.banque.services;
 import lombok.RequiredArgsConstructor;
 import org.miage.banque.entities.compte.Compte;
 import org.miage.banque.entities.compte.CompteInput;
+import org.miage.banque.entities.compte.CompteUtils;
 import org.miage.banque.entities.compte.CompteValidator;
 import org.miage.banque.exceptions.CompteNotFoundException;
 import org.miage.banque.repositories.ComptesRepository;
@@ -19,6 +20,7 @@ public class ComptesService {
     }
 
     public Compte createCompte(Compte compte) {
+        compte.setIBAN(CompteUtils.randomIban(compte.getClient().getPays()));
         return comptesRepository.save(compte);
     }
 

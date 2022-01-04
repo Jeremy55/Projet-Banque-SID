@@ -22,11 +22,16 @@ public class ClientsAssembler implements RepresentationModelAssembler<Client, En
 
     @Override
     public EntityModel<Client> toModel(Client client) {
+        if(client.getCompte() != null) {
+            return EntityModel.of(client,
+                    linkTo(methodOn(ClientsController.class)
+                            .getOne(client.getId())).withSelfRel(),
+                            linkTo(methodOn(ComptesController.class)
+                            .getOne(client.getCompte().getId())).withRel("compte"));
+        }
         return EntityModel.of(client,
                 linkTo(methodOn(ClientsController.class)
-                        .getOne(client.getId())).withSelfRel(),
-                linkTo(methodOn(ComptesController.class)
-                        .getOne(client.getCompte().getId())).withRel("compte"));
+                        .getOne(client.getId())).withSelfRel());
     }
 
     @Override

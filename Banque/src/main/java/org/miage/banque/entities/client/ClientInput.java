@@ -43,6 +43,4 @@ public class ClientInput {
     @NotBlank
     @NotNull
     private String secret;
-
-    private Long compte_id;
 }

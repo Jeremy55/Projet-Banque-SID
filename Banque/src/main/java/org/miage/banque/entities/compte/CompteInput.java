@@ -13,13 +13,10 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompteInput {
-
-    @NotBlank
-    @NotNull
-    @Size(min = 16, max = 34)
-    private String IBAN;
-
     @NotNull
     @DecimalMin(value = "0.0", message = "Le solde d'un nouveau compte doit être supérieur à 0")
     private double solde;
+
+    @NotNull
+    private Long client_id;
 }

@@ -5,7 +5,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.miage.banque.entities.client.Client;
 import org.miage.banque.entities.compte.Compte;
+import org.miage.banque.services.ClientsService;
 import org.miage.banque.services.ComptesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,6 +28,9 @@ class ComptesControllerTest {
 
     @Autowired
     private ComptesService comptesService;
+
+    @Autowired
+    private ClientsService clientsService;
 
     @BeforeEach
     public void setupContext(){
@@ -49,9 +54,19 @@ class ComptesControllerTest {
 
     @Test
     public void addCompte() throws JSONException {
+        Client client = new Client();
+        client.setNom("Picard");
+        client.setPrenom("Jérémy");
+        client.setPays("France");
+        client.setNo_passeport("113459888");
+        client.setTelephone("0695198754");
+        client.setSecret("azerty123456");
+
+        clientsService.createClient(client);
+
         JSONObject json = new JSONObject()
-                .put("iban", "FR111111111111111111111111111")
-                .put("solde", "100");
+                .put("solde", "100")
+                .put("client_id", client.getId());
 
         given()
                 .contentType("application/json")
@@ -93,33 +108,19 @@ class ComptesControllerTest {
     }
 
     @Test
-    public void addCompteSameIban() throws JSONException{
-        JSONObject json = new JSONObject()
-                .put("iban", "FR111111111111111111111111113")
-                .put("solde", "100");
-
-        given()
-                .contentType("application/json")
-                .body(json.toString())
-                .when()
-                .post("/comptes")
-                .then()
-                .statusCode(HttpStatus.SC_CREATED);
-
-        given()
-                .contentType("application/json")
-                .body(json.toString())
-                .when()
-                .post("/comptes")
-                .then()
-                .statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-    }
-
-    @Test
     public void deleteCompte() throws JSONException {
+
+        Client client = new Client();
+        client.setNom("Picard");
+        client.setPrenom("Jérémy");
+        client.setPays("France");
+        client.setNo_passeport("113459998");
+        client.setTelephone("0695198754");
+        client.setSecret("azerty123456");
+
         Compte compte = new Compte();
-        compte.setIBAN("FR111111111111111111111111124");
         compte.setSolde(100);
+        compte.setClient(client);
         comptesService.createCompte(compte);
 
         //Delete the newly created ressource.
@@ -147,5 +148,34 @@ class ComptesControllerTest {
     public void checkClientHateoas(){
         //Check if there is a link to accounts in _links.
         when().get("/comptes/1").then().body("_links.client.href", notNullValue());
+    }
+
+    @Test
+    public void addCompteWithoutClient() throws JSONException {
+        JSONObject json = new JSONObject()
+                .put("solde", "100");
+
+        given()
+                .contentType("application/json")
+                .body(json.toString())
+                .when()
+                .post("/comptes")
+                .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+    @Test
+    public void addCompteNonExistingClient() throws JSONException {
+        JSONObject json = new JSONObject()
+                .put("solde", "100")
+                .put("client_id", 0);
+
+        given()
+                .contentType("application/json")
+                .body(json.toString())
+                .when()
+                .post("/comptes")
+                .then()
+                .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 }
