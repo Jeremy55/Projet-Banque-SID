@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,6 +26,7 @@ public class ClientsService implements UserDetailsService {
 
     private final ClientsRepository clientsRepository;
     private final RolesRepository rolesRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Client getClient(Long id){
         log.info("Récupération du client avec l'id {}", id);
@@ -38,6 +40,7 @@ public class ClientsService implements UserDetailsService {
 
     public Client createClient(Client client) {
         log.info("Création d'un nouveau client {}", client.getNom());
+        client.setMot_de_passe(passwordEncoder.encode(client.getMot_de_passe()));
         return clientsRepository.save(client);
     }
 
