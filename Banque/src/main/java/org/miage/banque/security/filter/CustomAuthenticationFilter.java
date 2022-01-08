@@ -50,19 +50,16 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         String accessToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis()  + 10 + 60 * 1000)) //Valid for 10 minutes.
+                .withExpiresAt(new Date(System.currentTimeMillis()  + 10 * 60 * 1000)) //Valid for 10 minutes.
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 
         String refreshToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis()  + 1440 + 60 * 1000)) //Valid for 1 day.
+                .withExpiresAt(new Date(System.currentTimeMillis()  + 1440 * 60 * 1000)) //Valid for 1 day.
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
-
-        /*response.setHeader("access_token", accessToken);
-        response.setHeader("refresh_token", refreshToken);*/
 
         Map<String,String> tokens = new HashMap<>();
         tokens.put("access_token", accessToken);
