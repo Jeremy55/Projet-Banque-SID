@@ -4,4 +4,5 @@ import org.miage.banque.entities.client.Client;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ClientsRepository extends CrudRepository<Client, Long> {
+    Client findByEmail(String email);
 }

@@ -24,10 +24,6 @@ public class Compte {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne(mappedBy = "compte",cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Client client;
-
     @OneToMany(mappedBy = "compte", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<Carte> cartes;

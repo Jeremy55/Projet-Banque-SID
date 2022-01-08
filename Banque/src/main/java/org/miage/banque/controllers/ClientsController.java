@@ -2,12 +2,10 @@ package org.miage.banque.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.miage.banque.assemblers.ClientsAssembler;
+import org.miage.banque.entities.Role;
 import org.miage.banque.entities.client.Client;
 import org.miage.banque.entities.client.ClientInput;
-import org.miage.banque.entities.compte.Compte;
-import org.miage.banque.entities.compte.CompteInput;
 import org.miage.banque.services.ClientsService;
-import org.miage.banque.services.ComptesService;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
@@ -46,8 +44,23 @@ public class ClientsController {
         clientToCreate.setPays(client.getPays());
         clientToCreate.setNo_passeport(client.getNo_passport());
         clientToCreate.setTelephone(client.getTelephone());
-        clientToCreate.setSecret(client.getSecret());
+        clientToCreate.setMot_de_passe(client.getMot_de_passe());
+        clientToCreate.setEmail(client.getEmail());
         return new ResponseEntity<>(clientsAssembler.toModel(clientsService.createClient(clientToCreate)), HttpStatus.CREATED);
+    }
+
+    @PostMapping(value="/roles")
+    @Transactional
+    public ResponseEntity<?> createRole(@RequestBody Role role){
+        clientsService.createRole(role);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping({ "/{clientId}/roles" })
+    @Transactional
+    public ResponseEntity<?> addRole(@PathVariable("clientId") Long clientId, @RequestBody String role) {
+        //clientsService.addRoleToClient(clientId, role);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(value="/{clientId}")
@@ -60,7 +73,7 @@ public class ClientsController {
         clientToUpdate.setPays(client.getPays());
         clientToUpdate.setNo_passeport(client.getNo_passport());
         clientToUpdate.setTelephone(client.getTelephone());
-        clientToUpdate.setSecret(client.getSecret());
+        clientToUpdate.setMot_de_passe(client.getMot_de_passe());
 
         return new ResponseEntity<>(clientsAssembler.toModel(clientsService.updateClient(clientToUpdate)), HttpStatus.OK);
     }
@@ -74,15 +87,8 @@ public class ClientsController {
         if(client.getPays() != null) clientToUpdate.setPays(client.getPays());
         if(client.getNo_passport() != null) clientToUpdate.setNo_passeport(client.getNo_passport());
         if(client.getTelephone() != null) clientToUpdate.setTelephone(client.getTelephone());
-        if(client.getSecret() != null) clientToUpdate.setSecret(client.getSecret());
+        if(client.getMot_de_passe() != null) clientToUpdate.setMot_de_passe(client.getMot_de_passe());
 
         return new ResponseEntity<>(clientsAssembler.toModel(clientsService.updateClient(clientToUpdate)), HttpStatus.OK);
-    }
-
-    @DeleteMapping(value="/{clientId}")
-    @Transactional
-    public ResponseEntity<?> delete(@PathVariable("clientId") Long clientId){
-        clientsService.deleteClient(clientId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

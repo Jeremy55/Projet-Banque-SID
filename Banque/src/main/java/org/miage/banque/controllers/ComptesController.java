@@ -41,8 +41,6 @@ public class ComptesController {
     public ResponseEntity<?> create(@RequestBody @Valid CompteInput compte){
         Compte compteToCreate = new Compte();
         compteToCreate.setSolde(compte.getSolde());
-        compteToCreate.setClient(clientsService.getClient(compte.getClient_id()));
-
         return new ResponseEntity<>(comptesAssembler.toModel(comptesService.createCompte(compteToCreate)), HttpStatus.CREATED);
     }
 

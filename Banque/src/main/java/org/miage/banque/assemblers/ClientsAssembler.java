@@ -1,6 +1,7 @@
 package org.miage.banque.assemblers;
 
 
+import lombok.NonNull;
 import org.miage.banque.controllers.ClientsController;
 import org.miage.banque.controllers.ComptesController;
 import org.miage.banque.entities.client.Client;
@@ -22,16 +23,13 @@ public class ClientsAssembler implements RepresentationModelAssembler<Client, En
 
     @Override
     public EntityModel<Client> toModel(Client client) {
+        //Why is this removing the clients roles ?
+        EntityModel<Client> clientModel = EntityModel.of(client);
+        clientModel.add(linkTo(methodOn(ClientsController.class).getOne(client.getId())).withSelfRel());
         if(client.getCompte() != null) {
-            return EntityModel.of(client,
-                    linkTo(methodOn(ClientsController.class)
-                            .getOne(client.getId())).withSelfRel(),
-                            linkTo(methodOn(ComptesController.class)
-                            .getOne(client.getCompte().getId())).withRel("compte"));
+            clientModel.add(linkTo(methodOn(ComptesController.class).getOne(client.getCompte().getId())).withRel("compte"));
         }
-        return EntityModel.of(client,
-                linkTo(methodOn(ClientsController.class)
-                        .getOne(client.getId())).withSelfRel());
+        return clientModel;
     }
 
     @Override

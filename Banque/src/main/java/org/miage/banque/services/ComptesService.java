@@ -9,6 +9,8 @@ import org.miage.banque.exceptions.CompteNotFoundException;
 import org.miage.banque.repositories.ComptesRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class ComptesService {
@@ -20,7 +22,7 @@ public class ComptesService {
     }
 
     public Compte createCompte(Compte compte) {
-        compte.setIBAN(CompteUtils.randomIban(compte.getClient().getPays()));
+        compte.setIBAN(CompteUtils.randomIban("France"));
         return comptesRepository.save(compte);
     }
 

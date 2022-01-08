@@ -42,5 +42,9 @@ public class ClientInput {
 
     @NotBlank
     @NotNull
-    private String secret;
+    private String mot_de_passe;
+
+    @NotBlank
+    @NotNull
+    private String email;
 }

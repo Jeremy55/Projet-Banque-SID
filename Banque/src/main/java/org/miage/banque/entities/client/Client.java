@@ -1,18 +1,22 @@
 package org.miage.banque.entities.client;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.*;
+import org.miage.banque.entities.Role;
 import org.miage.banque.entities.compte.Compte;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import static javax.persistence.FetchType.EAGER;
+
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +31,18 @@ public class Client {
     private String no_passeport;
 
     private String telephone;
-    private String secret;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "compte_id", referencedColumnName = "id")
-    @JsonBackReference
+    private String email;
+    private String mot_de_passe;
+
+    //TODO LINK ACCOUNT TO CLIENT.
+    @OneToOne
     private Compte compte;
+
+    @ManyToMany(fetch = EAGER)
+    @JoinTable(name = "client_roles",
+            joinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id",referencedColumnName = "id"))
+    private Collection<Role> roles = new ArrayList<>();
 }
 
