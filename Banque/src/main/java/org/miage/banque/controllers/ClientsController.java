@@ -115,6 +115,7 @@ public class ClientsController {
     }
 
     @PostMapping(value="/roles")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public ResponseEntity<?> createRole(@RequestBody Role role){
         clientsService.createRole(role);
@@ -122,38 +123,12 @@ public class ClientsController {
     }
 
     @PostMapping({ "/{clientId}/roles" })
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public ResponseEntity<?> addRole(@PathVariable("clientId") Long clientId, @RequestBody String role) {
-        //clientsService.addRoleToClient(clientId, role);
+        Client client = clientsService.getClient(clientId);
+        clientsService.addRoleToClient(client.getEmail(), role);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping(value="/{clientId}")
-    @Transactional
-    public ResponseEntity<?> update(@PathVariable("clientId") Long clientId, @RequestBody ClientInput client){
-
-        Client clientToUpdate = clientsService.getClient(clientId);
-        clientToUpdate.setNom(client.getNom());
-        clientToUpdate.setPrenom(client.getPrenom());
-        clientToUpdate.setPays(client.getPays());
-        clientToUpdate.setNo_passeport(client.getNo_passport());
-        clientToUpdate.setTelephone(client.getTelephone());
-        clientToUpdate.setMot_de_passe(client.getMot_de_passe());
-
-        return new ResponseEntity<>(clientsAssembler.toModel(clientsService.updateClient(clientToUpdate)), HttpStatus.OK);
-    }
-
-    @PatchMapping(value="/{clientId}")
-    @Transactional
-    public ResponseEntity<?> patch(@PathVariable("clientId") Long clientId, @RequestBody ClientInput client){
-        Client clientToUpdate = clientsService.getClient(clientId);
-        if(client.getNom() != null) clientToUpdate.setNom(client.getNom());
-        if(client.getPrenom() != null) clientToUpdate.setPrenom(client.getPrenom());
-        if(client.getPays() != null) clientToUpdate.setPays(client.getPays());
-        if(client.getNo_passport() != null) clientToUpdate.setNo_passeport(client.getNo_passport());
-        if(client.getTelephone() != null) clientToUpdate.setTelephone(client.getTelephone());
-        if(client.getMot_de_passe() != null) clientToUpdate.setMot_de_passe(client.getMot_de_passe());
-
-        return new ResponseEntity<>(clientsAssembler.toModel(clientsService.updateClient(clientToUpdate)), HttpStatus.OK);
-    }
 }
