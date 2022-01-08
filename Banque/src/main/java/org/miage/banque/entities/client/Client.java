@@ -29,10 +29,11 @@ public class Client {
 
     @Column(unique = true)
     private String no_passeport;
-
+    @Column(unique = true)
     private String telephone;
-
+    @Column(unique = true)
     private String email;
+
     private String mot_de_passe;
 
     //TODO LINK ACCOUNT TO CLIENT.

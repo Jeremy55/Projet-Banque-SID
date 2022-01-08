@@ -10,16 +10,16 @@ import org.miage.banque.assemblers.ClientsAssembler;
 import org.miage.banque.entities.Role;
 import org.miage.banque.entities.client.Client;
 import org.miage.banque.entities.client.ClientInput;
+import org.miage.banque.exceptions.InvalidTokenException;
+import org.miage.banque.security.Token;
 import org.miage.banque.services.ClientsService;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,13 +45,35 @@ public class ClientsController {
     private final ClientsAssembler clientsAssembler;
 
     @GetMapping(value="/{clientId}")
-    public EntityModel<Client> getOne(@PathVariable("clientId") Long clientId) {
+    @PostAuthorize("returnObject.content.email == authentication.name or hasRole('ROLE_ADMIN')") //The user must be the client or an admin.
+    public EntityModel<Client> getOne(@PathVariable("clientId") Long clientId){
         return clientsAssembler.toModel(clientsService.getClient(clientId));
     }
+
 
     @GetMapping
     public Iterable<EntityModel<Client>> getAll(){
         return clientsAssembler.toCollectionModel(clientsService.getAllClients());
+    }
+
+    @PostMapping(value="/inscription")
+    @Transactional
+    public void create(@RequestBody @Valid ClientInput client, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        Client clientToCreate = new Client();
+        clientToCreate.setNom(client.getNom());
+        clientToCreate.setPrenom(client.getPrenom());
+        clientToCreate.setPays(client.getPays());
+        clientToCreate.setNo_passeport(client.getNo_passport());
+        clientToCreate.setTelephone(client.getTelephone());
+        clientToCreate.setMot_de_passe(client.getMot_de_passe());
+        clientToCreate.setEmail(client.getEmail());
+
+        Client clientSaved = clientsService.createClient(clientToCreate);
+        clientsService.addRoleToClient(clientSaved.getEmail(), "ROLE_CLIENT");
+
+        response.setContentType(APPLICATION_JSON_VALUE);
+        new ObjectMapper().writeValue(response.getOutputStream(), Token.generateTokens(clientSaved,request));
     }
 
     @GetMapping(value="/token/rafraichir")
@@ -90,20 +112,6 @@ public class ClientsController {
         }else {
             throw new RuntimeException("Refresh Token invalide");
         }
-    }
-
-    @PostMapping
-    @Transactional
-    public ResponseEntity<?> create(@RequestBody @Valid ClientInput client){
-        Client clientToCreate = new Client();
-        clientToCreate.setNom(client.getNom());
-        clientToCreate.setPrenom(client.getPrenom());
-        clientToCreate.setPays(client.getPays());
-        clientToCreate.setNo_passeport(client.getNo_passport());
-        clientToCreate.setTelephone(client.getTelephone());
-        clientToCreate.setMot_de_passe(client.getMot_de_passe());
-        clientToCreate.setEmail(client.getEmail());
-        return new ResponseEntity<>(clientsAssembler.toModel(clientsService.createClient(clientToCreate)), HttpStatus.CREATED);
     }
 
     @PostMapping(value="/roles")
