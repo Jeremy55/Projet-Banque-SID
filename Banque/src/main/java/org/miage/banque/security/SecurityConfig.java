@@ -33,10 +33,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        //Urls pour les anonymes.
         http.authorizeRequests().antMatchers(
                 "/clients/inscription/**",
                            "/clients/token/rafraichir/**").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET,"/clients/**").hasAnyAuthority("ROLE_CLIENT");
+        //Urls pour les clients simples.
+        http.authorizeRequests().antMatchers(HttpMethod.GET,"/clients/*/**").hasAnyAuthority("ROLE_CLIENT");
+        //Urls pour les admins.
+        http.authorizeRequests().antMatchers(
+                "/clients",
+                          "/clients/"
+        ).hasAnyAuthority("ROLE_ADMIN");
+
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

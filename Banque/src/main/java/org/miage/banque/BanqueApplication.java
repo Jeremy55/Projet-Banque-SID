@@ -2,6 +2,7 @@ package org.miage.banque;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import lombok.extern.slf4j.Slf4j;
 import org.miage.banque.entities.Role;
 import org.miage.banque.entities.client.Client;
 import org.miage.banque.entities.compte.Compte;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
+@Slf4j
 public class BanqueApplication {
 
 	public static void main(String[] args) {
@@ -38,9 +40,13 @@ public class BanqueApplication {
 	@Bean
 	CommandLineRunner run(ClientsService clientsService, ComptesService comptesService) {
 		return args -> {
+			log.info("Création des données de test pour la base de données.");
+
+			log.info("Création des roles.");
 			clientsService.createRole(new Role(null,"ROLE_CLIENT"));
 			clientsService.createRole(new Role(null,"ROLE_ADMIN"));
 
+			log.info("Création des clients normaux.");
 			Client client1 = new Client();
 			client1.setNom("Picard");
 			client1.setPrenom("Jérémy");
@@ -49,9 +55,21 @@ public class BanqueApplication {
 			client1.setTelephone("0329916847");
 			client1.setEmail("jeremy55200@hotmail.fr");
 			client1.setMot_de_passe("azerty123");
-			Client clientSaved = clientsService.createClient(client1);
+			clientsService.createClient(client1);
 			clientsService.addRoleToClient("jeremy55200@hotmail.fr","ROLE_CLIENT");
-			System.out.println(clientSaved.getRoles());
+
+			log.info("Création de l'admin.");
+			Client client2 = new Client();
+			client2.setNom("Admin");
+			client2.setPrenom("Admin");
+			client2.setPays("France");
+			client2.setNo_passeport("123456799");
+			client2.setTelephone("0329917847");
+			client2.setEmail("admin@admin.fr");
+			client2.setMot_de_passe("root");
+			clientsService.createClient(client2);
+			clientsService.addRoleToClient("admin@admin.fr","ROLE_ADMIN");
+			clientsService.addRoleToClient("admin@admin.fr","ROLE_CLIENT");
 		};
 	}
 }
