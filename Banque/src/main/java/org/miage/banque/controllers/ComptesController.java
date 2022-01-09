@@ -14,6 +14,7 @@ import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,7 @@ public class ComptesController {
     private final ComptesAssembler comptesAssembler;
 
     @GetMapping(value="/{compteId}")
+    @PostAuthorize("returnObject.content.client.email == authentication.name or hasRole('ROLE_ADMIN')")
     public EntityModel<Compte> getOne(@PathVariable("compteId")  Long id){
         return comptesAssembler.toModel(comptesService.getCompte(id));
     }
@@ -56,13 +58,6 @@ public class ComptesController {
         Client client = clientsService.getClientByEmail(mailClient);
 
         return new ResponseEntity<>(comptesAssembler.toModel(clientsService.createCompte(compteToCreate,client)), HttpStatus.CREATED);
-    }
-
-    @DeleteMapping(value="/{compteId}")
-    @Transactional
-    public ResponseEntity<?> delete(@PathVariable("compteId") Long id){
-        comptesService.deleteCompte(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
