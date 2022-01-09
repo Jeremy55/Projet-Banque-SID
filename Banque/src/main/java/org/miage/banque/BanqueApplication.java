@@ -4,8 +4,10 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import lombok.extern.slf4j.Slf4j;
 import org.miage.banque.entities.Role;
+import org.miage.banque.entities.carte.Carte;
 import org.miage.banque.entities.client.Client;
 import org.miage.banque.entities.compte.Compte;
+import org.miage.banque.services.CartesService;
 import org.miage.banque.services.ClientsService;
 import org.miage.banque.services.ComptesService;
 import org.springframework.boot.CommandLineRunner;
@@ -15,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 @Slf4j
@@ -38,9 +41,10 @@ public class BanqueApplication {
 				.description("Documentation sommaire de API Banque 1.0"));
 	}
 
-	@Profile("!test")
+
 	@Bean
-	CommandLineRunner run(ClientsService clientsService, ComptesService comptesService) {
+	@Profile("!test")
+	CommandLineRunner run(ClientsService clientsService, CartesService cartesService, ComptesService comptesService) {
 		return args -> {
 			log.info("Création des données de test pour la base de données.");
 
@@ -64,6 +68,15 @@ public class BanqueApplication {
 			Compte compte = new Compte();
 			compte.setSolde(1000);
 			clientsService.createCompte(compte,client1);
+
+			log.info("Création des cartes");
+			Carte carte = new Carte();
+			carte.setActive(true);
+			carte.setLocalisation(true);
+			carte.setVirtuelle(false);
+			carte.setContact(true);
+			carte.setPlafond(10000);
+			carte = cartesService.createCarte(carte,client1.getCompte());
 
 			log.info("Création de l'admin.");
 			Client client2 = new Client();

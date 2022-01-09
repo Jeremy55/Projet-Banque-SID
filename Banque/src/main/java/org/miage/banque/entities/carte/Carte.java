@@ -34,8 +34,7 @@ public class Carte {
 
     private Date expiration;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "compte_id")
-    @JsonBackReference
     private Compte compte;
 }

@@ -10,6 +10,8 @@ import org.miage.banque.entities.carte.Carte;
 import org.miage.banque.entities.client.Client;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -24,9 +26,8 @@ public class Compte {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToMany(mappedBy = "compte", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Set<Carte> cartes;
+    @OneToMany(mappedBy = "compte",cascade = CascadeType.ALL)
+    private Collection<Carte> cartes = new ArrayList<Carte>();
 
     @OneToMany(mappedBy = "compte",cascade = CascadeType.ALL)
     @JsonManagedReference

@@ -26,8 +26,4 @@ public class CarteInput {
     @NotNull
     @DecimalMin(value= "100")
     private double plafond;
-
-    @NotNull
-    private Long compte_id;
-
 }

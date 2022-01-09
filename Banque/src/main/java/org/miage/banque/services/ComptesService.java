@@ -2,6 +2,7 @@ package org.miage.banque.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.miage.banque.entities.carte.Carte;
 import org.miage.banque.entities.client.Client;
 import org.miage.banque.entities.compte.Compte;
 import org.miage.banque.entities.compte.CompteInput;

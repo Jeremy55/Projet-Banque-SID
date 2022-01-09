@@ -35,9 +35,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        //Documentation
         //Urls pour les anonymes.
         http.authorizeRequests().antMatchers(
-                "/clients/inscription/**",
+                           "/swagger-ui/**",
+                           "/v3/api-docs/**",
+                           "/clients/inscription/**",
                            "/clients/token/rafraichir/**").permitAll();
         //Urls pour les clients simples.
         http.authorizeRequests().antMatchers(HttpMethod.GET,"/clients/*/**").hasAnyAuthority("ROLE_CLIENT");
