@@ -36,8 +36,8 @@ public class Client {
 
     private String mot_de_passe;
 
-    //TODO LINK ACCOUNT TO CLIENT.
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "compte_id", referencedColumnName = "id")
     private Compte compte;
 
     @ManyToMany(fetch = EAGER)

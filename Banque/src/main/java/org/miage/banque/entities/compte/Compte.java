@@ -32,6 +32,9 @@ public class Compte {
     @JsonManagedReference
     private Set<Operation> operations;
 
+    @OneToOne(mappedBy = "compte")
+    private Client client;
+
     @Column(unique = true)
     private String IBAN;
     private double solde;

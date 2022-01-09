@@ -16,7 +16,4 @@ public class CompteInput {
     @NotNull
     @DecimalMin(value = "0.0", message = "Le solde d'un nouveau compte doit être supérieur à 0")
     private double solde;
-
-    @NotNull
-    private Long client_id;
 }

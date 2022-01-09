@@ -27,4 +27,11 @@ public class RestResponseEntityExceptionHandler {
     public ResponseEntity<Object> exception(InvalidTokenException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(value ={
+            RuntimeException.class
+    })
+    public ResponseEntity<Object> exception(Exception exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
 }

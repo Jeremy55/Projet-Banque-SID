@@ -4,9 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.miage.banque.entities.Role;
 import org.miage.banque.entities.client.Client;
+import org.miage.banque.entities.compte.Compte;
 import org.miage.banque.exceptions.ClientNotFoundException;
+import org.miage.banque.exceptions.InvalidTokenException;
 import org.miage.banque.repositories.ClientsRepository;
 import org.miage.banque.repositories.RolesRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +29,7 @@ public class ClientsService implements UserDetailsService {
 
     private final ClientsRepository clientsRepository;
     private final RolesRepository rolesRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     public Client getClient(Long id){
@@ -64,6 +68,14 @@ public class ClientsService implements UserDetailsService {
         Client client = clientsRepository.findByEmail(email);
         Role role = rolesRepository.findByNom(roleName);
         client.getRoles().add(role);
+    }
+
+    public void addCompteToClient(Client client, Compte compte) {
+        log.info("Ajout du compte {} au client {}", compte.getIBAN(), client.getEmail());
+        if(client.getCompte() != null) {
+            throw new RuntimeException("Vous avez déjà un compte.");
+        }
+        client.setCompte(compte);
     }
 
     @Override
