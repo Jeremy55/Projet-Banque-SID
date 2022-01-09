@@ -41,4 +41,9 @@ public class CartesService {
     public Iterable<? extends Carte> getAllCartes() {
         return cartesRepository.findAll();
     }
+
+    public void deleteCarte(Carte carte) {
+        carte.setActive(false);
+        cartesRepository.save(carte);
+    }
 }

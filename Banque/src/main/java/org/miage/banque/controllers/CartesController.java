@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(value="cartes",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,5 +57,17 @@ public class CartesController  {
         Compte compte = clientsService.getClientByEmail(clientEmail).getCompte();
 
         return new ResponseEntity<>(cartesAssembler.toModel(cartesService.createCarte(carte,compte)), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(value = "/{carteId}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public ResponseEntity<?> delete(@PathVariable Long carteId, @AuthenticationPrincipal String clientEmail) {
+        Compte compte = clientsService.getClientByEmail(clientEmail).getCompte();
+        Carte carte = cartesService.getCarte(carteId);
+        if(Objects.equals(carte.getCompte().getId(), compte.getId())){
+            cartesService.deleteCarte(carte);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        throw new RuntimeException("Cette Carte ne vous appartient pas.");
     }
 }
