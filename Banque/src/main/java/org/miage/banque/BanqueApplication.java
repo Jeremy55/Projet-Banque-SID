@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -37,6 +38,7 @@ public class BanqueApplication {
 				.description("Documentation sommaire de API Banque 1.0"));
 	}
 
+	@Profile("!test")
 	@Bean
 	CommandLineRunner run(ClientsService clientsService, ComptesService comptesService) {
 		return args -> {
@@ -57,6 +59,11 @@ public class BanqueApplication {
 			client1.setMot_de_passe("azerty123");
 			clientsService.createClient(client1);
 			clientsService.addRoleToClient("jeremy55200@hotmail.fr","ROLE_CLIENT");
+
+			log.info("Création des comptes.");
+			Compte compte = new Compte();
+			compte.setSolde(1000);
+			clientsService.createCompte(compte,client1);
 
 			log.info("Création de l'admin.");
 			Client client2 = new Client();

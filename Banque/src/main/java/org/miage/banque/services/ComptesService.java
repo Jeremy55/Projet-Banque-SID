@@ -21,18 +21,9 @@ import javax.transaction.Transactional;
 public class ComptesService {
 
     private final ComptesRepository comptesRepository;
-    private final ClientsService clientsService;
 
     public Compte getCompte(Long id) {
         return comptesRepository.findById(id).orElseThrow(() -> new CompteNotFoundException("Ce compte n'existe pas."));
-    }
-
-    public Compte createCompte(Compte compte, Client client) {
-        log.info("Création d'un compte pour le client {}", client.getNom());
-        compte.setIBAN(CompteUtils.randomIban(client.getPays()));
-        compte =  comptesRepository.save(compte);
-        clientsService.addCompteToClient(client, compte);
-        return compte;
     }
 
     public Iterable<? extends Compte> getAllComptes() {

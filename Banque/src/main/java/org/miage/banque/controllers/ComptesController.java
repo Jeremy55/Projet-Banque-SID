@@ -55,7 +55,7 @@ public class ComptesController {
 
         Client client = clientsService.getClientByEmail(mailClient);
 
-        return new ResponseEntity<>(comptesAssembler.toModel(comptesService.createCompte(compteToCreate,client)), HttpStatus.CREATED);
+        return new ResponseEntity<>(comptesAssembler.toModel(clientsService.createCompte(compteToCreate,client)), HttpStatus.CREATED);
     }
 
     @DeleteMapping(value="/{compteId}")

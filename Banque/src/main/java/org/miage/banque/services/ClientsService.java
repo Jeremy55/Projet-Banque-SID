@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.miage.banque.entities.Role;
 import org.miage.banque.entities.client.Client;
 import org.miage.banque.entities.compte.Compte;
+import org.miage.banque.entities.compte.CompteUtils;
 import org.miage.banque.exceptions.ClientNotFoundException;
 import org.miage.banque.exceptions.InvalidTokenException;
 import org.miage.banque.repositories.ClientsRepository;
+import org.miage.banque.repositories.ComptesRepository;
 import org.miage.banque.repositories.RolesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,6 +31,7 @@ public class ClientsService implements UserDetailsService {
 
     private final ClientsRepository clientsRepository;
     private final RolesRepository rolesRepository;
+    private final ComptesRepository comptesRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -70,12 +73,17 @@ public class ClientsService implements UserDetailsService {
         client.getRoles().add(role);
     }
 
-    public void addCompteToClient(Client client, Compte compte) {
+    public Compte createCompte(Compte compte, Client client) {
+        log.info("Création d'un compte pour le client {}", client.getNom());
+        compte.setIBAN(CompteUtils.randomIban(client.getPays()));
+        compte =  comptesRepository.save(compte);
         log.info("Ajout du compte {} au client {}", compte.getIBAN(), client.getEmail());
         if(client.getCompte() != null) {
             throw new RuntimeException("Vous avez déjà un compte.");
         }
         client.setCompte(compte);
+        clientsRepository.save(client);
+        return compte;
     }
 
     @Override
@@ -91,5 +99,11 @@ public class ClientsService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(role.getNom()));
         });
         return new org.springframework.security.core.userdetails.User(client.getEmail(), client.getMot_de_passe(), authorities);
+    }
+
+    public void deleteAll() {
+        clientsRepository.deleteAll();
+        comptesRepository.deleteAll();
+        rolesRepository.deleteAll();
     }
 }
