@@ -61,11 +61,11 @@ public class ClientsController {
             clientToUpdate.setPrenom(client.getPrenom());
             clientToUpdate.setPays(client.getPays());
             clientToUpdate.setTelephone(client.getTelephone());
+            clientToUpdate.setMot_de_passe(client.getMot_de_passe());
             return new ResponseEntity<>(clientsAssembler.toModel(clientsService.updateClient(clientToUpdate)), HttpStatus.OK);
         }
         throw new RuntimeException("Vous ne pouvez pas mdofiier un client qui n'est pas vous.");
     }
-
 
     @GetMapping
     public Iterable<EntityModel<Client>> getAll(){
