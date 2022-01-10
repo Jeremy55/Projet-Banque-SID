@@ -17,6 +17,11 @@ public class OperationsService {
 
     public Operation create(Operation operation) {
         log.info("Création d'une opération {} pour un montant de {}", operation.getCategorie(), operation.getMontant());
+        log.info("Vérification du montant disponible sur le compte : {}", operation.getCompte().getSolde());
+        if (operation.getMontant() >= operation.getCompte().getSolde()) {
+            log.error("Le montant {} est supérieur au montant disponible sur le compte {}", operation.getMontant(), operation.getCompte().getIBAN());
+            throw new RuntimeException("Le montant demandé est supérieur au solde du compte");
+        }
         return operationsRepository.save(operation);
     }
 }

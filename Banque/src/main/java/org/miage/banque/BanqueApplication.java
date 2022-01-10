@@ -7,9 +7,11 @@ import org.miage.banque.entities.Role;
 import org.miage.banque.entities.carte.Carte;
 import org.miage.banque.entities.client.Client;
 import org.miage.banque.entities.compte.Compte;
+import org.miage.banque.entities.operation.Operation;
 import org.miage.banque.services.CartesService;
 import org.miage.banque.services.ClientsService;
 import org.miage.banque.services.ComptesService;
+import org.miage.banque.services.OperationsService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -44,7 +46,7 @@ public class BanqueApplication {
 
 	@Bean
 	@Profile("!test")
-	CommandLineRunner run(ClientsService clientsService, CartesService cartesService, ComptesService comptesService) {
+	CommandLineRunner run(ClientsService clientsService, CartesService cartesService, ComptesService comptesService, OperationsService operationsService) {
 		return args -> {
 			log.info("Création des données de test pour la base de données.");
 
@@ -77,6 +79,13 @@ public class BanqueApplication {
 			carte.setContact(true);
 			carte.setPlafond(10000);
 			carte = cartesService.createCarte(carte,client1.getCompte());
+
+			Operation operation = new Operation();
+			operation.setCategorie("Loisir");
+			operation.setCarte(carte);
+			operation.setCompte(client1.getCompte());
+			operation.setMontant(100);
+			operationsService.create(operation);
 
 			log.info("Création de l'admin.");
 			Client client2 = new Client();
