@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.miage.banque.entities.compte.Compte;
+import org.miage.banque.entities.operation.Operation;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -37,4 +39,7 @@ public class Carte {
     @ManyToOne
     @JoinColumn(name = "compte_id")
     private Compte compte;
+
+    @OneToMany(mappedBy = "carte",cascade = CascadeType.ALL)
+    private Set<Operation> operations;
 }

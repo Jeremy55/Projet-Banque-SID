@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.miage.banque.entities.carte.Carte;
 import org.miage.banque.entities.compte.Compte;
 
 import javax.persistence.*;
@@ -29,8 +30,11 @@ public class Operation {
     private String pays;
     private Timestamp date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "compte_id")
-    @JsonBackReference
     private Compte compte;
+
+    @ManyToOne
+    @JoinColumn(name = "carte_id")
+    private Carte carte;
 }

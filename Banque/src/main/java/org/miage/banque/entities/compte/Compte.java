@@ -30,7 +30,6 @@ public class Compte {
     private Collection<Carte> cartes = new ArrayList<Carte>();
 
     @OneToMany(mappedBy = "compte",cascade = CascadeType.ALL)
-    @JsonManagedReference
     private Set<Operation> operations;
 
     @OneToOne(mappedBy = "compte")
