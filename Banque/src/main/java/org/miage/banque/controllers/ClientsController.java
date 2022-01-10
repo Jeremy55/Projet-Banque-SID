@@ -10,6 +10,7 @@ import org.miage.banque.assemblers.ClientsAssembler;
 import org.miage.banque.entities.Role;
 import org.miage.banque.entities.client.Client;
 import org.miage.banque.entities.client.ClientInput;
+import org.miage.banque.entities.client.ClientPutInput;
 import org.miage.banque.exceptions.InvalidTokenException;
 import org.miage.banque.security.Token;
 import org.miage.banque.services.ClientsService;
@@ -20,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +50,20 @@ public class ClientsController {
     @PostAuthorize("returnObject.content.email == authentication.name or hasRole('ROLE_ADMIN')") //The user must be the client or an admin.
     public EntityModel<Client> getOne(@PathVariable("clientId") Long clientId){
         return clientsAssembler.toModel(clientsService.getClient(clientId));
+    }
+
+    @PutMapping(value="/{clientId}")
+    @Transactional
+    public ResponseEntity<?> update(@PathVariable("clientId") Long clientId, @RequestBody ClientPutInput client, @AuthenticationPrincipal String clientEmail){
+        Client clientToUpdate = clientsService.getClient(clientId);
+        if(clientToUpdate.getEmail().equals(clientEmail)){
+            clientToUpdate.setNom(client.getNom());
+            clientToUpdate.setPrenom(client.getPrenom());
+            clientToUpdate.setPays(client.getPays());
+            clientToUpdate.setTelephone(client.getTelephone());
+            return new ResponseEntity<>(clientsAssembler.toModel(clientsService.updateClient(clientToUpdate)), HttpStatus.OK);
+        }
+        throw new RuntimeException("Vous ne pouvez pas mdofiier un client qui n'est pas vous.");
     }
 
 
@@ -130,5 +146,6 @@ public class ClientsController {
         clientsService.addRoleToClient(client.getEmail(), role);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
 }

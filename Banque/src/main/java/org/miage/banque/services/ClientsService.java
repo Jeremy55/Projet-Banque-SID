@@ -53,6 +53,7 @@ public class ClientsService implements UserDetailsService {
 
     public Client updateClient(Client clientToUpdate) {
         log.info("Mise à jour du client {}", clientToUpdate.getNom());
+        clientToUpdate.setMot_de_passe(passwordEncoder.encode(clientToUpdate.getMot_de_passe()));
         return clientsRepository.save(clientToUpdate);
     }
 
