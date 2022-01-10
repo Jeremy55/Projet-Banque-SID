@@ -3,6 +3,7 @@ package org.miage.banque;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import lombok.extern.slf4j.Slf4j;
+import org.miage.banque.delegate.ConversionServiceDelegate;
 import org.miage.banque.entities.Role;
 import org.miage.banque.entities.carte.Carte;
 import org.miage.banque.entities.client.Client;
@@ -12,9 +13,11 @@ import org.miage.banque.services.CartesService;
 import org.miage.banque.services.ClientsService;
 import org.miage.banque.services.ComptesService;
 import org.miage.banque.services.OperationsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 @Slf4j
+@EnableDiscoveryClient
 public class BanqueApplication {
 
 	public static void main(String[] args) {
@@ -49,6 +53,8 @@ public class BanqueApplication {
 	CommandLineRunner run(ClientsService clientsService, CartesService cartesService, ComptesService comptesService, OperationsService operationsService) {
 		return args -> {
 			log.info("Création des données de test pour la base de données.");
+
+			//conversionServiceDelegate.callStudentServiceAndGetData("EUR","USD",1000);
 
 			log.info("Création des roles.");
 			clientsService.createRole(new Role(null,"ROLE_CLIENT"));
