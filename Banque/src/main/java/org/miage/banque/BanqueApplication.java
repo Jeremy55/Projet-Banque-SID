@@ -101,7 +101,7 @@ public class BanqueApplication {
 			carte.setLocalisation(true);
 			carte.setVirtuelle(false);
 			carte.setContact(true);
-			carte.setPlafond(10000);
+			carte.setPlafond(1000);
 			carte = cartesService.createCarte(carte,client1.getCompte());
 
 			Operation operation = new Operation();
@@ -110,8 +110,6 @@ public class BanqueApplication {
 			operation.setDevise("EUR");
 			operation.setMontant(150);
 			operation.setCarte(carte);
-
-			operation.setMontant(100);
 			operationsService.create(operation);
 
 			log.info("Création de l'admin.");

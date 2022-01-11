@@ -9,6 +9,8 @@ import org.miage.banque.entities.operation.Operation;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
@@ -42,4 +44,20 @@ public class Carte {
 
     @OneToMany(mappedBy = "carte",cascade = CascadeType.ALL)
     private Set<Operation> operations;
+
+    public boolean isLimitReached(double toAdd) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+        double total = 0;
+
+        if(getOperations() != null) {
+            for (Operation op : getOperations()) {
+                if (op.getDate().after(calendar.getTime())) {
+                    total += op.getMontant();
+                }
+            }
+        }
+
+        return  (total + toAdd) >= getPlafond();
+    }
 }

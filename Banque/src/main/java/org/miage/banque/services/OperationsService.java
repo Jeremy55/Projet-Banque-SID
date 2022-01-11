@@ -8,6 +8,7 @@ import org.miage.banque.repositories.OperationsRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Calendar;
 import java.util.Objects;
 
 @Service
@@ -22,6 +23,14 @@ public class OperationsService {
     public Operation create(Operation operation) {
         log.info("Création d'une opération {} pour un montant de {}", operation.getCategorie(), operation.getMontant());
 
+        Calendar calendar = Calendar.getInstance();
+        operation.setDate(calendar.getTime());
+
+        if(!operation.getCarte().isActive()){
+            log.error("La carte n'est pas active");
+            throw new RuntimeException("La carte n'est pas active");
+        }
+
         if(!Objects.equals(operation.getDevise(), operation.getCarte().getCompte().getDevise())) {
             log.info("Conversion de la devise de l'opération {} vers la devise du compte {}.", operation.getDevise(), operation.getCarte().getCompte().getDevise());
             double convertedOperation = conversionServiceDelegate.callStudentServiceAndGetData(operation.getDevise(), operation.getCarte().getCompte().getDevise(), operation.getMontant());
@@ -35,8 +44,15 @@ public class OperationsService {
             throw new RuntimeException("Le montant demandé est supérieur au solde du compte");
         }
 
-        //TODO : Vérifier expiration de la carte.
-        //TODO : Vérifier plafond de la carte.
+        if(operation.getDate().after(operation.getCarte().getExpiration())){
+            log.error("La date de l'opération est supérieur à la date d'expiration de la carte");
+            throw new RuntimeException("La date de l'opération est supérieur à la date d'expiration de la carte");
+        }
+
+        if(operation.getCarte().isLimitReached(operation.getMontant())){
+            log.error("La carte {} a atteint son plafond pour le mois glissant en cours.", operation.getCarte().getNumero());
+            throw new RuntimeException("La carte a atteint son plafond pour le mois glissant en cours.");
+        }
         //TODO : Géolocalisation.
 
         log.info("Mise à jour du solde du compte avec un débit de {}", operation.getMontant());

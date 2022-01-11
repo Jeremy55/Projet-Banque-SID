@@ -9,6 +9,7 @@ import org.miage.banque.entities.compte.Compte;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -27,7 +28,7 @@ public class Operation {
     private String devise;
     private String categorie;
     private String pays;
-    private Timestamp date;
+    private Date date;
 
     private String IBAN_debiteur;
 

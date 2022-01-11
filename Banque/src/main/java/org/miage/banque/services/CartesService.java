@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.miage.banque.entities.carte.Carte;
 import org.miage.banque.entities.carte.CarteUtils;
 import org.miage.banque.entities.compte.Compte;
+import org.miage.banque.entities.operation.Operation;
 import org.miage.banque.exceptions.CarteNotFoundException;
 import org.miage.banque.repositories.CartesRepository;
 import org.springframework.stereotype.Service;
