@@ -25,8 +25,22 @@ public class ComptesService {
         return comptesRepository.findAll();
     }
 
-    public void deleteCompte(Long id) {
-        comptesRepository.deleteById(id);
+    public void credit(String IBAN, double montant) {
+        Compte compte = comptesRepository.findCompteByIBAN(IBAN);
+
+        if(compte == null) {
+            log.warn("Compte non trouvé pour l'IBAN {} communication de l'opération à la banque du propriétaire.", IBAN);
+            return;
+        }
+
+        compte.setSolde(compte.getSolde() + montant);
+        comptesRepository.save(compte);
+    }
+
+    public void debit(String IBAN, double montant) {
+        Compte compte = comptesRepository.findCompteByIBAN(IBAN);
+        compte.setSolde(compte.getSolde() - montant);
+        comptesRepository.save(compte);
     }
 
 }

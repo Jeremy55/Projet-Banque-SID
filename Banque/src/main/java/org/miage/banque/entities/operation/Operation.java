@@ -23,15 +23,13 @@ public class Operation {
 
     private String libelle;
     private double montant;
-    private double montant_apres_conversion;
+    private double montant_avant_conversion;
     private String devise;
     private String categorie;
     private String pays;
     private Timestamp date;
 
-    @ManyToOne
-    @JoinColumn(name = "compte_id")
-    private Compte compte;
+    private String IBAN_debiteur;
 
     @ManyToOne
     @JoinColumn(name = "carte_id")

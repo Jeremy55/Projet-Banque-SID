@@ -72,11 +72,28 @@ public class BanqueApplication {
 			clientsService.createClient(client1);
 			clientsService.addRoleToClient("jeremy55200@hotmail.fr","ROLE_CLIENT");
 
+			Client client2 = new Client();
+			client2.setNom("Shuai");
+			client2.setPrenom("Vitoria");
+			client2.setPays("France");
+			client2.setNo_passeport("578456789");
+			client2.setTelephone("0729116847");
+			client2.setEmail("vitoria@qqmail.cn");
+			client2.setMot_de_passe("cc123");
+			clientsService.createClient(client2);
+			clientsService.addRoleToClient("vitoria@qqmail.cn","ROLE_CLIENT");
+
 			log.info("Création des comptes.");
+
 			Compte compte = new Compte();
 			compte.setSolde(1000);
 			compte.setDevise("EUR");
 			clientsService.createCompte(compte,client1);
+
+			Compte compte2 = new Compte();
+			compte2.setSolde(1000);
+			compte2.setDevise("EUR");
+			clientsService.createCompte(compte2,client2);
 
 			log.info("Création des cartes");
 			Carte carte = new Carte();
@@ -89,21 +106,24 @@ public class BanqueApplication {
 
 			Operation operation = new Operation();
 			operation.setCategorie("Loisir");
+			operation.setIBAN_debiteur(client2.getCompte().getIBAN());
+			operation.setDevise("EUR");
+			operation.setMontant(150);
 			operation.setCarte(carte);
-			operation.setCompte(client1.getCompte());
+
 			operation.setMontant(100);
 			operationsService.create(operation);
 
 			log.info("Création de l'admin.");
-			Client client2 = new Client();
-			client2.setNom("Admin");
-			client2.setPrenom("Admin");
-			client2.setPays("France");
-			client2.setNo_passeport("123456799");
-			client2.setTelephone("0329917847");
-			client2.setEmail("admin@admin.fr");
-			client2.setMot_de_passe("root");
-			clientsService.createClient(client2);
+			Client client3 = new Client();
+			client3.setNom("Admin");
+			client3.setPrenom("Admin");
+			client3.setPays("France");
+			client3.setNo_passeport("123456799");
+			client3.setTelephone("0329917847");
+			client3.setEmail("admin@admin.fr");
+			client3.setMot_de_passe("root");
+			clientsService.createClient(client3);
 			clientsService.addRoleToClient("admin@admin.fr","ROLE_ADMIN");
 			clientsService.addRoleToClient("admin@admin.fr","ROLE_CLIENT");
 		};

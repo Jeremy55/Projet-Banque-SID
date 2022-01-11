@@ -29,9 +29,6 @@ public class Compte {
     @OneToMany(mappedBy = "compte",cascade = CascadeType.ALL)
     private Collection<Carte> cartes = new ArrayList<Carte>();
 
-    @OneToMany(mappedBy = "compte",cascade = CascadeType.ALL)
-    private Set<Operation> operations;
-
     @OneToOne(mappedBy = "compte")
     private Client client;
 
