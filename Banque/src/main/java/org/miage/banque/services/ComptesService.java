@@ -2,15 +2,9 @@ package org.miage.banque.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.miage.banque.entities.carte.Carte;
-import org.miage.banque.entities.client.Client;
 import org.miage.banque.entities.compte.Compte;
-import org.miage.banque.entities.compte.CompteInput;
-import org.miage.banque.entities.compte.CompteUtils;
-import org.miage.banque.entities.compte.CompteValidator;
 import org.miage.banque.exceptions.CompteNotFoundException;
 import org.miage.banque.repositories.ComptesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

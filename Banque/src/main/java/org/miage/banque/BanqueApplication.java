@@ -75,6 +75,7 @@ public class BanqueApplication {
 			log.info("Création des comptes.");
 			Compte compte = new Compte();
 			compte.setSolde(1000);
+			compte.setDevise("EUR");
 			clientsService.createCompte(compte,client1);
 
 			log.info("Création des cartes");

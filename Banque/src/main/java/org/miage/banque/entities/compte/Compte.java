@@ -35,6 +35,8 @@ public class Compte {
     @OneToOne(mappedBy = "compte")
     private Client client;
 
+    private String devise;
+
     @Column(unique = true)
     private String IBAN;
     private double solde;

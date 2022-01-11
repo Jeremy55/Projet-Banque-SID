@@ -54,7 +54,7 @@ public class ComptesController {
 
         Compte compteToCreate = new Compte();
         compteToCreate.setSolde(compte.getSolde());
-
+        compteToCreate.setDevise(compte.getDevise());
         Client client = clientsService.getClientByEmail(mailClient);
 
         return new ResponseEntity<>(comptesAssembler.toModel(clientsService.createCompte(compteToCreate,client)), HttpStatus.CREATED);

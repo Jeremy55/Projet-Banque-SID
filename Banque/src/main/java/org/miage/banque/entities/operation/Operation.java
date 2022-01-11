@@ -24,7 +24,6 @@ public class Operation {
     private String libelle;
     private double montant;
     private double montant_apres_conversion;
-    private double taux_conversion;
     private String devise;
     private String categorie;
     private String pays;
