@@ -3,7 +3,9 @@ package org.miage.banque.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.miage.banque.delegate.ConversionServiceDelegate;
+import org.miage.banque.entities.compte.Compte;
 import org.miage.banque.entities.operation.Operation;
+import org.miage.banque.exceptions.OperationNotFoundException;
 import org.miage.banque.repositories.OperationsRepository;
 import org.springframework.stereotype.Service;
 
@@ -62,5 +64,13 @@ public class OperationsService {
         comptesService.credit(operation.getIBAN_debiteur(), operation.getMontant());
 
         return operationsRepository.save(operation);
+    }
+
+    public Iterable<Operation> getAll() {
+        return operationsRepository.findAll();
+    }
+
+    public Operation getOperation(Long id) {
+        return operationsRepository.findById(id).orElseThrow( () -> new OperationNotFoundException("Cette opération n'exsite pas."));
     }
 }
