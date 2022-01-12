@@ -21,6 +21,7 @@ public class OperationsService {
     private final OperationsRepository operationsRepository;
     private final ComptesService comptesService;
     private final ConversionServiceDelegate conversionServiceDelegate;
+    private final CartesService cartesService;
 
     public Operation create(Operation operation) {
         log.info("Création d'une opération {} pour un montant de {}", operation.getCategorie(), operation.getMontant());
@@ -62,6 +63,11 @@ public class OperationsService {
 
         log.info("Crédit du montant de {} sur le compte {}", operation.getMontant(), operation.getIBAN_debiteur());
         comptesService.credit(operation.getIBAN_debiteur(), operation.getMontant());
+
+        if(operation.getCarte().isVirtuelle()){
+            log.info("La carte est virtuelle donc désactivation de la carte {}", operation.getCarte().getNumero());
+            cartesService.deleteCarte(operation.getCarte());
+        }
 
         return operationsRepository.save(operation);
     }
