@@ -39,6 +39,10 @@ public class CartesService {
         return cartesRepository.save(carte);
     }
 
+    public Carte getCarteByNumero(String numero) {
+        return cartesRepository.findByNumero(numero);
+    }
+
     public Iterable<? extends Carte> getAllCartes() {
         return cartesRepository.findAll();
     }
