@@ -7,10 +7,12 @@ import org.miage.banque.entities.carte.Carte;
 import org.miage.banque.entities.compte.Compte;
 import org.miage.banque.entities.operation.Operation;
 import org.miage.banque.entities.operation.OperationCarteInput;
+import org.miage.banque.exceptions.CarteNotFoundException;
 import org.miage.banque.exceptions.CompteNotFoundException;
 import org.miage.banque.exceptions.InvalidTokenException;
 import org.miage.banque.services.CartesService;
 import org.miage.banque.services.ClientsService;
+import org.miage.banque.services.ComptesService;
 import org.miage.banque.services.OperationsService;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
@@ -33,6 +35,7 @@ public class OperationsController {
     private final OperationsService operationsService;
     private final CartesService cartesService;
     private final ClientsService clientsService;
+    private final ComptesService comptesService;
     private final OperationsAssembler operationsAssembler;
 
     @GetMapping(value = "/{operationId}")
@@ -95,4 +98,23 @@ public class OperationsController {
         compte.getCartes().forEach(carte -> operations.addAll(carte.getOperations()));
         return operationsAssembler.toCollectionModel(operations);
     }
+
+    @GetMapping("/carte/{carteId}")
+    public Iterable<EntityModel<Operation>> getAllByCarte(@PathVariable("carteId") Long carteId, @AuthenticationPrincipal String email){
+        log.info("Vérification que la carte {} appartient bien à l'utilisateur {}", carteId, email);
+        Compte compte = clientsService.getClientByEmail(email).getCompte();
+
+        if(compte == null){
+            throw new CarteNotFoundException("Vous n'avez pas de compte.");
+        }
+
+        Carte carte = cartesService.getCarte(carteId);
+
+        if(!comptesService.carteBelongsToCompte(compte,carte)){
+            throw new InvalidTokenException("Cette carte ne vous appartient pas.");
+        }
+
+        return operationsAssembler.toCollectionModel(carte.getOperations());
+    }
+
 }

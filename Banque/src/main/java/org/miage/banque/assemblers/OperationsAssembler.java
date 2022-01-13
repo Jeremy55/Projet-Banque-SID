@@ -22,6 +22,7 @@ public class OperationsAssembler implements RepresentationModelAssembler<Operati
         EntityModel<Operation> operationModel = EntityModel.of(entity);
         operationModel.add(linkTo(methodOn(OperationsController.class).getOne(entity.getId())).withSelfRel());
         operationModel.add(linkTo(methodOn(CartesController.class).getOne(entity.getCarte().getId())).withRel("carte"));
+        operationModel.add(linkTo(methodOn(ComptesController.class).getOne(entity.getCarte().getId())).withRel("compte"));
         return operationModel;
     }
 

@@ -2,6 +2,7 @@ package org.miage.banque.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.miage.banque.entities.carte.Carte;
 import org.miage.banque.entities.compte.Compte;
 import org.miage.banque.exceptions.CompteNotFoundException;
 import org.miage.banque.repositories.ComptesRepository;
@@ -35,6 +36,10 @@ public class ComptesService {
 
         compte.setSolde(compte.getSolde() + montant);
         comptesRepository.save(compte);
+    }
+
+    public boolean carteBelongsToCompte(Compte compte, Carte carte){
+        return compte.getCartes().contains(carte);
     }
 
     public void debit(String IBAN, double montant) {
