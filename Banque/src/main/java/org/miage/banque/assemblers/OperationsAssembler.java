@@ -1,6 +1,9 @@
 package org.miage.banque.assemblers;
 
+import org.miage.banque.controllers.CartesController;
 import org.miage.banque.controllers.ComptesController;
+import org.miage.banque.controllers.OperationsController;
+import org.miage.banque.entities.client.Client;
 import org.miage.banque.entities.compte.Compte;
 import org.miage.banque.entities.operation.Operation;
 import org.springframework.hateoas.CollectionModel;
@@ -16,9 +19,10 @@ public class OperationsAssembler implements RepresentationModelAssembler<Operati
 
     @Override
     public EntityModel<Operation> toModel(Operation entity) {
-        return EntityModel.of(entity,
-                linkTo(methodOn(ComptesController.class)
-                        .getOne(entity.getId())).withSelfRel());
+        EntityModel<Operation> operationModel = EntityModel.of(entity);
+        operationModel.add(linkTo(methodOn(OperationsController.class).getOne(entity.getId())).withSelfRel());
+        operationModel.add(linkTo(methodOn(CartesController.class).getOne(entity.getCarte().getId())).withRel("carte"));
+        return operationModel;
     }
 
     @Override

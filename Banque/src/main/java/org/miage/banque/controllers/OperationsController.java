@@ -7,7 +7,10 @@ import org.miage.banque.entities.carte.Carte;
 import org.miage.banque.entities.compte.Compte;
 import org.miage.banque.entities.operation.Operation;
 import org.miage.banque.entities.operation.OperationCarteInput;
+import org.miage.banque.exceptions.CompteNotFoundException;
+import org.miage.banque.exceptions.InvalidTokenException;
 import org.miage.banque.services.CartesService;
+import org.miage.banque.services.ClientsService;
 import org.miage.banque.services.OperationsService;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
@@ -16,6 +19,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 @RestController
@@ -27,6 +32,7 @@ public class OperationsController {
 
     private final OperationsService operationsService;
     private final CartesService cartesService;
+    private final ClientsService clientsService;
     private final OperationsAssembler operationsAssembler;
 
     @GetMapping(value = "/{operationId}")
@@ -73,5 +79,20 @@ public class OperationsController {
         return operationsAssembler.toCollectionModel(operationsService.getAll());
     }
 
-    //TODO : Get operations by compte, loop over every cards in the accounts and get operations to return.
+    @GetMapping("/compte/{compteId}")
+    public Iterable<EntityModel<Operation>> getAllByCompte(@PathVariable("compteId") Long compteId, @AuthenticationPrincipal String email){
+        log.info("Vérification du compte de l'utilisateur {}", email);
+        Compte compte = clientsService.getClientByEmail(email).getCompte();
+
+        if(compte == null){
+            throw new CompteNotFoundException("Vous n'avez pas de compte.");
+        }
+
+        if(!compte.getId().equals(compteId)){
+            throw new InvalidTokenException("Ce compte ne vous appartient pas.");
+        }
+        Collection<Operation> operations = new ArrayList<>();
+        compte.getCartes().forEach(carte -> operations.addAll(carte.getOperations()));
+        return operationsAssembler.toCollectionModel(operations);
+    }
 }
