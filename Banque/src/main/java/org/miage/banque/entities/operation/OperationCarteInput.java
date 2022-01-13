@@ -41,6 +41,9 @@ public class OperationCarteInput {
     @NotNull
     private boolean online;
 
+    private String longitude;
+    private String latitude;
+
     //For card and needded info to verify.
     @NotNull
     @Size(min = 16, max = 16)

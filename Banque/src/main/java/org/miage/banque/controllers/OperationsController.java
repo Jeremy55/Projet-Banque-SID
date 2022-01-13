@@ -58,6 +58,11 @@ public class OperationsController {
         Carte carte = cartesService.getCarteByNumero(operationCarteInput.getNumero());
         operation.setCarte(carte);
 
+        if(carte.isLocalisation()){
+            operation.setLatitude(operationCarteInput.getLatitude());
+            operation.setLongitude(operationCarteInput.getLongitude());
+        }
+
         //If the card accept contactless payment and the amount is less than 50 we don't need to check anything else.
         if(carte.isContact() && operation.isContact() && operation.getMontant() <= 50){
             return operationsAssembler.toModel(operationsService.create(operation));

@@ -3,7 +3,7 @@ package org.miage.banque.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.miage.banque.delegate.ConversionServiceDelegate;
-import org.miage.banque.entities.compte.Compte;
+import org.miage.banque.delegate.LocalisationServiceDelegate;
 import org.miage.banque.entities.operation.Operation;
 import org.miage.banque.exceptions.OperationNotFoundException;
 import org.miage.banque.repositories.OperationsRepository;
@@ -21,6 +21,7 @@ public class OperationsService {
     private final OperationsRepository operationsRepository;
     private final ComptesService comptesService;
     private final ConversionServiceDelegate conversionServiceDelegate;
+    private final LocalisationServiceDelegate localisationServiceDelegate;
     private final CartesService cartesService;
 
     public Operation create(Operation operation) {
@@ -36,7 +37,7 @@ public class OperationsService {
 
         if(!Objects.equals(operation.getDevise(), operation.getCarte().getCompte().getDevise())) {
             log.info("Conversion de la devise de l'opération {} vers la devise du compte {}.", operation.getDevise(), operation.getCarte().getCompte().getDevise());
-            double convertedOperation = conversionServiceDelegate.callStudentServiceAndGetData(operation.getDevise(), operation.getCarte().getCompte().getDevise(), operation.getMontant());
+            double convertedOperation = conversionServiceDelegate.callConversionService(operation.getDevise(), operation.getCarte().getCompte().getDevise(), operation.getMontant());
             operation.setMontant_avant_conversion(operation.getMontant());
             operation.setMontant(convertedOperation);
         }
@@ -56,7 +57,15 @@ public class OperationsService {
             log.error("La carte {} a atteint son plafond pour le mois glissant en cours.", operation.getCarte().getNumero());
             throw new RuntimeException("La carte a atteint son plafond pour le mois glissant en cours.");
         }
-        //TODO : Géolocalisation.
+
+        if(operation.getCarte().isLocalisation()){
+            log.info("La carte utilise un système de géolocalisation, vérification du pays.");
+            String countryCode = localisationServiceDelegate.callLocalisationService(operation.getLongitude(),operation.getLatitude());
+            if(!Objects.equals(operation.getCarte().getCompte().getClient().getPays(), countryCode)){
+                throw new RuntimeException("Vous ne pouvez pas utiliser cette carte dans un pays différent du votre" +
+                        " car vous avez activé le système de protection basé sur la situation géographique.");
+            }
+        }
 
         log.info("Mise à jour du solde du compte avec un débit de {}", operation.getMontant());
         comptesService.debit(operation.getCarte().getCompte().getIBAN(), operation.getMontant());

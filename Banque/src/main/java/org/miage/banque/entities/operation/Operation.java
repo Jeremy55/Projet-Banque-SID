@@ -39,6 +39,9 @@ public class Operation {
     private boolean contact;
     private boolean online;
 
+    private String longitude;
+    private String latitude;
+
     @ManyToOne
     @JoinColumn(name = "carte_id")
     private Carte carte;

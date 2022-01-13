@@ -18,11 +18,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @Slf4j
@@ -47,6 +49,12 @@ public class BanqueApplication {
 				.description("Documentation sommaire de API Banque 1.0"));
 	}
 
+	@LoadBalanced
+	@Bean
+	public RestTemplate restTemplate(){
+		return new RestTemplate();
+	}
+
 
 	@Bean
 	@Profile("!test")
@@ -64,7 +72,7 @@ public class BanqueApplication {
 			Client client1 = new Client();
 			client1.setNom("Picard");
 			client1.setPrenom("Jérémy");
-			client1.setPays("France");
+			client1.setPays("FR");
 			client1.setNo_passeport("123456789");
 			client1.setTelephone("0329916847");
 			client1.setEmail("jeremy55200@hotmail.fr");
@@ -75,7 +83,7 @@ public class BanqueApplication {
 			Client client2 = new Client();
 			client2.setNom("Shuai");
 			client2.setPrenom("Vitoria");
-			client2.setPays("France");
+			client2.setPays("FR");
 			client2.setNo_passeport("578456789");
 			client2.setTelephone("0729116847");
 			client2.setEmail("vitoria@qqmail.cn");
@@ -98,7 +106,7 @@ public class BanqueApplication {
 			log.info("Création des cartes");
 			Carte carte = new Carte();
 			carte.setActive(true);
-			carte.setLocalisation(true);
+			carte.setLocalisation(false);
 			carte.setVirtuelle(false);
 			carte.setContact(true);
 			carte.setPlafond(1000);

@@ -24,7 +24,7 @@ public class ConversionServiceDelegate {
     @Lazy
     RestTemplate restTemplate;
 
-    public Double callStudentServiceAndGetData(String from,String to, double quantity) {
+    public Double callConversionService(String from, String to, double quantity) {
         log.info("Utilisation de l'API externe pour convertir {} en {} pour un montant de {}.",from,to,quantity);
 
         String url = "http://conversion-service/convertion/from/{from}/to/{to}/quantity/{quantity}";
@@ -37,12 +37,6 @@ public class ConversionServiceDelegate {
         double converted =  Double.parseDouble(Objects.requireNonNull(response.getBody()));
         log.info("Résultat de la conversion : {}", converted);
         return converted;
-    }
-
-    @LoadBalanced
-    @Bean
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
     }
 
 }
