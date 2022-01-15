@@ -92,7 +92,7 @@ public class ClientsService implements UserDetailsService {
         Client client = clientsRepository.findByEmail(mail);
         if (client == null) {
             log.error("Client avec le mail {} n'existe pas. ", mail);
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("Cet utilisateur n'existe pas.");
         }
         log.info("Utilisateur avec le mail {} trouvé.",mail);
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -100,11 +100,5 @@ public class ClientsService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(role.getNom()));
         });
         return new org.springframework.security.core.userdetails.User(client.getEmail(), client.getMot_de_passe(), authorities);
-    }
-
-    public void deleteAll() {
-        clientsRepository.deleteAll();
-        comptesRepository.deleteAll();
-        rolesRepository.deleteAll();
     }
 }
