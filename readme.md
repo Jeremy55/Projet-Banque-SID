@@ -1,10 +1,10 @@
 ## Guide d'utilisation 
 Pour lancer ce projet, il faut avoir docker d'installé sur votre machine.
-###On commence par lancer la base de données et consul avec les commandes suivantes :
+### On commence par lancer la base de données et consul avec les commandes suivantes :
 ```docker-compose up```
 <br>
 ``` docker run  -p 8500:8500 -p 8600:8600/udp --name=consul consul:1.9.13```
-###On prépare ensuite les 3 services utilisés par le projet principal :
+### On lance ensuite les microservices dans l'ordre suivant :
 ```mvn -f .\Conversion\ spring-boot:run```
 <br>
 ```mvn -f .\Localisation\ spring-boot:run```
