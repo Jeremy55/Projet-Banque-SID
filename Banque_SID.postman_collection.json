@@ -1,0 +1,747 @@
+{
+	"info": {
+		"_postman_id": "4fb40c14-3dd5-4fd1-9116-87dc4d828cc1",
+		"name": "Banque_SID",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Gestion Client / Token",
+			"item": [
+				{
+					"name": "INSCRIPTION",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nom\":\"Picard\",\r\n    \"prenom\":\"Florian\",\r\n    \"pays\":\"FR\",\r\n    \"no_passport\":\"113456788\",\r\n    \"telephone\":\"0327916715\",\r\n    \"email\":\"florian55200@hotmail.com\",\r\n    \"mot_de_passe\":\"azerty123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/clients/inscription",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"clients",
+								"inscription"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGIN - Client Simple",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "jeremy55200@hotmail.fr",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "azerty123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGIN - Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "admin@admin.fr",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "root",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REFRESH TOKEN",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqZXJlbXk1NTIwMEBob3RtYWlsLmZyIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL2xvZ2luIiwiZXhwIjoxNjQxNzQzNzg5fQ.N9cFuBphsEDNhYohWpeRBKJPertNSs-ZlpZ3XGtCun0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/clients/token/rafraichir",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"clients",
+								"token",
+								"rafraichir"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CLIENT/ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqZXJlbXk1NTIwMEBob3RtYWlsLmZyIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL2xvZ2luIiwiZXhwIjoxNjQxODA0NDE1fQ.W-KdoTbANmaXy9gwO2If-umzIarEB67CnvmqXv8_EaY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/clients/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"clients",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ALL USERS -  Admin only",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/clients/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"clients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CLIENT/ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqZXJlbXk1NTIwMEBob3RtYWlsLmZyIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL2NsaWVudHMvdG9rZW4vcmFmcmFpY2hpciIsImV4cCI6MTY0MTgwNDUzOX0.40jA1C7n3rD6tFUwvMrCtbmq-5f1JrBtGZpCtQcPPXw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nom\": \"Picar\",\r\n  \"prenom\": \"Jérémy\",\r\n  \"pays\": \"France\",\r\n  \"telephone\": \"0329987415\",\r\n  \"mot_de_passe\": \"wxcvbn12344444\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/clients/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"clients",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Gestion Compte",
+			"item": [
+				{
+					"name": "POST COMPTE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmbG9yaWFuNTUyMDBAaG90bWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX0NMSUVOVCJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODEvY2xpZW50cy9pbnNjcmlwdGlvbiIsImV4cCI6MTY0MTc1NTIwMH0.PS6aMDLvlTeyJ4-Sno8v77bpFC6pv_cNykdtjANyQXg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"solde\":\"5\",\r\n    \"devise\":\"EUR\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/comptes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"comptes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET COMPTES/ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqZXJlbXk1NTIwMEBob3RtYWlsLmZyIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL2xvZ2luIiwiZXhwIjoxNjQxNzQ4ODI4fQ.BBoRVIrKgeA5mmWCA-1dkePDwFf_8B4V1hJA9lfcrAg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/comptes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"comptes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gestion Carte",
+			"item": [
+				{
+					"name": "POST CARTE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqZXJlbXk1NTIwMEBob3RtYWlsLmZyIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL2xvZ2luIiwiZXhwIjoxNjQyMzAyMTQzfQ.vAMUKA141-nR5NOj6GH-4gmlwah22tI0hZd3RgI0kh0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"active\": true,\r\n    \"contact\": true,\r\n    \"virtuelle\": false,\r\n    \"localisation\": false,\r\n    \"plafond\": 1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8081/cartes",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8081",
+							"path": [
+								"cartes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE CARTE",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqZXJlbXk1NTIwMEBob3RtYWlsLmZyIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL2xvZ2luIiwiZXhwIjoxNjQxNzYxOTU1fQ.52V9Txxb0sf4Zws6I8g8ARDG8VyIT1PgwX4UJbpjOfQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8081/cartes/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8081",
+							"path": [
+								"cartes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gestion Operation",
+			"item": [
+				{
+					"name": "GET Operations/id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5mciIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0NMSUVOVCJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODEvbG9naW4iLCJleHAiOjE2NDE5OTA2Njl9.mqISEjoBJ5h6cpx9NiuaTLFoHKydjE8tr6mXe6-B32s",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/operations/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"operations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make Payment - Geo Loc Chine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"libelle\": \"Boulangerie\",\r\n  \"montant\": 10,\r\n  \"categorie\": \"Alimentaire\",\r\n  \"pays\": \"France\",\r\n  \"devise\": \"EUR\",\r\n  \"contact\": false,\r\n  \"online\": false,\r\n  \"numero\": \"8544550799690312\",\r\n  \"code\": \"8782\",\r\n  \"cryptogramme\": \"536\",\r\n  \"iban_debiteur\": \"FR195094878539007000779459304536\",\r\n  \"longitude\":\"31.23\",\r\n  \"latitude\":\"121.47\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/operations/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"operations",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make Payment Geo Loc France",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"libelle\": \"Boulangerie\",\r\n  \"montant\": 10,\r\n  \"categorie\": \"Alimentaire\",\r\n  \"pays\": \"France\",\r\n  \"devise\": \"EUR\",\r\n  \"contact\": false,\r\n  \"online\": false,\r\n  \"numero\": \"8544550799690312\",\r\n  \"code\": \"8782\",\r\n  \"cryptogramme\": \"536\",\r\n  \"iban_debiteur\": \"FR195094878539007000779459304536\",\r\n  \"longitude\":\"48.69\",\r\n  \"latitude\":\"6.18\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/operations/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"operations",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET operations/compte/id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqZXJlbXk1NTIwMEBob3RtYWlsLmZyIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL2xvZ2luIiwiZXhwIjoxNjQyMDYyNzgxfQ.nIeOsQwm-JVb9xT4x3lpLd7Z1zvXVbAT_C5_6C1fBIg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/operations/compte/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"operations",
+								"compte",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make Payment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"libelle\": \"Boulangerie\",\r\n  \"montant\": 10,\r\n  \"categorie\": \"Alimentaire\",\r\n  \"pays\": \"France\",\r\n  \"devise\": \"EUR\",\r\n  \"contact\": false,\r\n  \"online\": false,\r\n  \"numero\": \"8909668540538918\",\r\n  \"code\": \"5922\",\r\n  \"cryptogramme\": \"063\",\r\n  \"iban_debiteur\": \"FR195094878539007000779459304536\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/operations/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"operations",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Commerce API",
+			"item": [
+				{
+					"name": "Sans Contact",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"montant\": 25,\r\n   \"numero\": \"1633598760505286\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8072/paiements/contact",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8072",
+							"path": [
+								"paiements",
+								"contact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Online",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"montant\": 10,\r\n    \"numero\": \"6373360926818291\",\r\n    \"code\": \"7454\",\r\n    \"cryptogramme\": \"879\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8082/paiements/online",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8082",
+							"path": [
+								"paiements",
+								"online"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Normal",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"montant\": 14,\r\n   \"numero\": \"1633598760505286\",\r\n   \"code\": \"2488\",\r\n   \"cryptogramme\": \"081\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8072/paiements",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8072",
+							"path": [
+								"paiements"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Conversion API",
+			"item": [
+				{
+					"name": "GET Conversion",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/convertion/from/EUR/to/CNY/quantity/1000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"convertion",
+								"from",
+								"EUR",
+								"to",
+								"CNY",
+								"quantity",
+								"1000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supported pairs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/convertion/supported-currencies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"convertion",
+								"supported-currencies"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Localisation API",
+			"item": [
+				{
+					"name": "Localisation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8091/localisation/48.69/2.33/country",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8091",
+							"path": [
+								"localisation",
+								"48.69",
+								"2.33",
+								"country"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqZXJlbXk1NTIwMEBob3RtYWlsLmZyIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL2xvZ2luIiwiZXhwIjoxNjQyMzQxNDk2fQ.qmRihNI_bAEfIK981ryBL5gKcG3ugLqvRbGBduujkZA",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
