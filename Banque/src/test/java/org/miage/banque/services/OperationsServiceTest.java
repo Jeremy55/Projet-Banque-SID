@@ -223,37 +223,6 @@ class OperationsServiceTest {
     }
 
     @Test
-    void expiredCarteCreate(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, 2);
-        Operation operation = new Operation();
-        operation.setDevise("EUR");
-        operation.setMontant(100.0);
-        operation.setIBAN_debiteur("FR7612345678901234567890123456789");
-        operation.setCategorie("Achat");
-        operation.setDate(calendar.getTime());
-        Carte carte = new Carte();
-        carte.setActive(true);
-        carte.setExpiration(new Date());
-        carte.setNumero("123456789");
-        carte.setLocalisation(false);
-        carte.setVirtuelle(false);
-        carte.setPlafond(1500.0);
-        Compte compte = new Compte();
-        compte.setDevise("EUR");
-        compte.setSolde(1000.0);
-        compte.setIBAN("FR761234567890123456789012345");
-
-        carte.setCompte(compte);
-        operation.setCarte(carte);
-
-
-        assertThatThrownBy( ()-> operationsService.create(operation))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("La date de l'opération est supérieur à la date d'expiration de la carte");
-    }
-
-    @Test
     void usingVirtualCarteIsExpiredAfterUseCreate(){
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, 2);
