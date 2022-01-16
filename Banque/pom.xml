@@ -76,11 +76,6 @@
 			<artifactId>httpcore</artifactId>
 			<version>4.4.13</version>
 		</dependency>
-        <dependency>
-            <groupId>org.miage</groupId>
-            <artifactId>banque</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
