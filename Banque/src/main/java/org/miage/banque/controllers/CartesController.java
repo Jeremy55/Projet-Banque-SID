@@ -39,6 +39,7 @@ public class CartesController  {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Iterable<EntityModel<Carte>> getAll(){
         return cartesAssembler.toCollectionModel(cartesService.getAllCartes());
     }

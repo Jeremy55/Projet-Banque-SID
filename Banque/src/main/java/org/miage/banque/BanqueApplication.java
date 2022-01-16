@@ -48,7 +48,7 @@ public class BanqueApplication {
 				.version("1.0")
 				.description("Documentation sommaire de API Banque 1.0"));
 	}
-
+	
 	@LoadBalanced
 	@Bean
 	public RestTemplate restTemplate(){
